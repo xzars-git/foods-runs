@@ -1,6 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
+import '../database/theme_database.dart';
+
 // Theme Event
 abstract class ThemeEvent extends Equatable {
   const ThemeEvent();

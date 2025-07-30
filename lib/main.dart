@@ -1,14 +1,10 @@
-import 'package:auth/auth.dart';
+
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:new_sakti_mobile/core.dart';
 
 void main() async {
   await Setup.initialize();
-
-  if (SessionDatabase.token.isNotEmpty) {
-    ApiServiceAuth().getUserData();
-  }
 
   runApp(const MyApp());
 }

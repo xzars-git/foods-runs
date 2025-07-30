@@ -14,12 +14,6 @@ class RouteConfigs {
                   : MediaRes.images.notFound,
             ),
             const SizedBox(height: 24.0),
-            BasePrimaryButton(
-              isDense: true,
-              text: "Kembali ke beranda",
-              onPressed: () => GoRouter.of(context).go(RouterUtils.beranda),
-            ),
-            const Spacer(),
           ],
         ),
       ),

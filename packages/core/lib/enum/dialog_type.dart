@@ -1,1 +1,0 @@
-enum DialogType { primary, danger }

@@ -9,28 +9,10 @@ final List<GoRoute> baseRoutes = [
       return const SplashScreenView();
     },
   ),
-  GoRoute(
-    path: RouterUtils.beranda,
-    builder: (BuildContext context, GoRouterState state) {
-      return const BerandaView();
-    },
-  ),
-  GoRoute(
-    path: RouterUtils.informasiPkb,
-    builder: (BuildContext context, GoRouterState state) {
-      return const InformasiTunggakanView();
-    },
-  ),
-  GoRoute(
-    path: RouterUtils.profile,
-    builder: (BuildContext context, GoRouterState state) {
-      return const ProfileView();
-    },
-  ),
-  GoRoute(
-    path: RouterUtils.riwayatBatalTransaksi,
-    builder: (BuildContext context, GoRouterState state) {
-      return const DaftarKendaraanView();
-    },
-  ),
+  // GoRoute(
+  //   path: RouterUtils.beranda,
+  //   builder: (BuildContext context, GoRouterState state) {
+  //     return const BerandaView();
+  //   },
+  // ),
 ];

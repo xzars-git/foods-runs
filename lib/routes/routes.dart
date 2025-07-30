@@ -5,8 +5,5 @@ final GoRouter router = GoRouter(
   navigatorKey: Get.navigatorKey,
   initialLocation: RouterUtils.root,
   errorBuilder: RouteConfigs.errorBuilder,
-  routes: <RouteBase>[
-    ...authRoutes,
-    ...baseRoutes
-  ],
+  routes: <RouteBase>[...baseRoutes],
 );
