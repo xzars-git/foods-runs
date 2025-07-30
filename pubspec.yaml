@@ -1,0 +1,107 @@
+name: new_sakti_mobile
+description: "A new Flutter project."
+
+publish_to: "none"
+
+version: 1.0.0
+
+environment:
+  sdk: ">=3.3.4 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  build_runner: ^2.4.9
+  cupertino_icons: ^1.0.6
+  get_it: ^7.7.0
+  intl: ^0.18.1
+  json_annotation: ^4.9.0
+  path_provider: ^2.1.4
+  validatorless: ^1.2.3
+  change_app_package_name: ^1.5.0
+  firebase_core: ^2.31.0
+  firebase_crashlytics: ^3.5.5
+  firebase_analytics: ^10.10.5
+
+  flutter_localizations:
+    sdk: flutter
+
+  core:
+    path: packages/core
+  base:
+    path: packages/base
+  auth:
+    path: packages/auth
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Roboto-ThinItalic.ttf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Roboto-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Roboto-BlackItalic.ttf
+          weight: 900
+          style: italic
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
+
+  assets:
+    - assets/files/
+    - assets/fonts/
+    - assets/icons/chevron/
+    - assets/icons/input/
+    - assets/icons/message/
+    - assets/icons/misc/
+    - assets/icons/state/
+    - assets/icons/layanan/
+    - assets/icons/awal_akhir_hari/
+    - assets/icons/info_progresif/
+    - assets/icons/detail_kendaraan/
+    - assets/icons/pilih_dokumen/
+    - assets/images/
+    - assets/images/svg/
+    - assets/images/info_progresif/
+    - assets/images/lepas_kepemilikan/
+    - assets/images/logo/
+    - assets/images/vehicle/
+    - assets/images/layanan/
+    - assets/images/menu/
+    - assets/images/profile/
+    - assets/images/ilustrasi/
+    - assets/images/state/

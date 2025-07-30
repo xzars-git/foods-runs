@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "294406660407",
+    "project_id": "sertifikasi-food-runs",
+    "storage_bucket": "sertifikasi-food-runs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294406660407:android:5f37fcfa78e5c4d930bab2",
+        "android_client_info": {
+          "package_name": "com.xzars.foods_run"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWeb8HcVfHu2Tt4j8HO_2xmmEGHMwkvCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
