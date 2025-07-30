@@ -1,104 +1,105 @@
-# # =========================
-# # Flutter & Dart defaults
-# # =========================
-# .dart_tool/
-# .packages
-# .pub-cache/
-# .pub/
-# build/
-# **/build/
-# **/ios/Flutter/.last_build_id
-# **/doc/api/
+# =========================
+# Flutter & Dart defaults
+# =========================
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+**/build/
+**/ios/Flutter/.last_build_id
+**/doc/api/
 
-# # Generated files by Flutter
-# flutter_*.png
-# flutter_export_environment.sh
-# flutter_export_environment.bat
+# Generated files by Flutter
+flutter_*.png
+flutter_export_environment.sh
+flutter_export_environment.bat
 
-# # =========================
-# # Firebase (optional)
-# # =========================
-# lib/firebase_options.dart
-# android/app/google-services.json
-# ios/Runner/GoogleService-Info.plist
+# =========================
+# Firebase (optional)
+# =========================
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
 
-# # =========================
-# # Android-specific
-# # =========================
-# /android/.gradle/
-# /android/.idea/
-# /android/local.properties
-# /android/app/build/
-# /android/app/intermediates/
-# /android/app/outputs/
-# /android/app/debug/
-# /android/app/profile/
-# /android/app/release/
+# =========================
+# Android-specific
+# =========================
+/android/.gradle/
+/android/.idea/
+/android/local.properties
+/android/app/build/
+/android/app/intermediates/
+/android/app/outputs/
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
 
-# /.gradle
+/.gradle
 
-# *.apk
-# *.aab
-# *.ap_
+*.apk
+*.aab
+*.ap_
 
-# # Android Studio specific
-# *.iml
-# *.iws
-# .idea/
+# Android Studio specific
+*.iml
+*.iws
+.idea/
 
-# # =========================
-# # iOS-specific
-# # =========================
-# /ios/.symlinks/
-# /ios/Pods/
-# /ios/.flutter-plugins
-# /ios/.flutter-plugins-dependencies
-# /ios/Flutter/Flutter.framework
-# /ios/Flutter/Flutter.podspec
-# /ios/Runner.xcworkspace/
-# /ios/Runner.xcodeproj/project.xcworkspace/
-# /ios/Flutter/ephemeral/
+# =========================
+# iOS-specific
+# =========================
+/ios/.symlinks/
+/ios/Pods/
+/ios/.flutter-plugins
+/ios/.flutter-plugins-dependencies
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Runner.xcworkspace/
+/ios/Runner.xcodeproj/project.xcworkspace/
+/ios/Flutter/ephemeral/
 
-# # =========================
-# # Web-specific
-# # =========================
-# web/.dart_tool/
-# web/build/
+# =========================
+# Web-specific
+# =========================
+web/.dart_tool/
+web/build/
 
-# # =========================
-# # VSCode
-# # =========================
-# .vscode/
+# =========================
+# VSCode
+# =========================
+.vscode/
 
-# # =========================
-# # Miscellaneous
-# # =========================
-# *.lock
-# *.log
-# *.tmp
-# *.temp
-# *.swp
-# *.swo
-# *.class
-# *.pyc
-# .DS_Store
-# Thumbs.db
+# =========================
+# Miscellaneous
+# =========================
+*.lock
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.class
+*.pyc
+.DS_Store
+Thumbs.db
 
-# # JSON to Dart Model generator tracker
-# /.json_models/
-# models.jsonc
+# JSON to Dart Model generator tracker
+/.json_models/
+models.jsonc
 
-# # Symbolication & obfuscation
-# app.*.symbols
-# app.*.map.json
+# Symbolication & obfuscation
+app.*.symbols
+app.*.map.json
 
-# # Output & cache artifacts
-# outputs.json
-# executionHistory.bin
-# executionHistory.lock
-# fileHashes.bin
-# fileHashes.lock
-# buildOutputCleanup.lock
+# Output & cache artifacts
+outputs.json
+executionHistory.bin
+executionHistory.lock
+fileHashes.bin
+fileHashes.lock
+buildOutputCleanup.lock
 
-# .flutter-plugins
-# .flutter-plugins-dependencies
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
