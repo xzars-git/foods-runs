@@ -42,9 +42,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: BebasNeue
-      fonts:
-        - asset: assets/fonts/BebasNeue-Regular.ttf
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Thin.ttf
@@ -77,9 +74,6 @@ flutter:
         - asset: assets/fonts/Roboto-BlackItalic.ttf
           weight: 900
           style: italic
-    - family: Lato
-      fonts:
-        - asset: assets/fonts/Lato-Regular.ttf
 
   assets:
     - assets/files/

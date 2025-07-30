@@ -20,7 +20,7 @@ class Images {
 }
 
 class _SVGState {
-  static String basePath = 'state';
+  static String basePath = 'svg';
   String get back => '${Images.basePath}/$basePath/back.svg';
   String get location => '${Images.basePath}/$basePath/location.svg';
   String get logo => '${Images.basePath}/$basePath/logo.svg';

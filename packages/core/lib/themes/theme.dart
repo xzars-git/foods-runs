@@ -5,14 +5,14 @@ ThemeData themeDataLight = ThemeData(
   useMaterial3: false,
 ).copyWith(
   primaryColor: primaryColor,
-  colorScheme: const ColorScheme.light(
+  colorScheme: ColorScheme.light(
     brightness: Brightness.light,
     background: appLightBackground,
     onBackground: gray900,
     surface: neutralWhite,
     onSurface: gray900,
     outline: blueGray50,
-    primary: blue700,
+    primary: primaryColor,
     onPrimary: neutralWhite,
     secondary: gray200,
     onSecondary: gray600,

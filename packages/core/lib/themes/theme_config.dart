@@ -194,20 +194,6 @@ TextStyle bodyXSmall(context) {
   );
 }
 
-TextStyle largestBebasNeue = const TextStyle(
-  fontFamily: 'BebasNeue',
-  fontSize: 75,
-  fontWeight: FontWeight.w400,
-  color: neutralWhite,
-);
-
-TextStyle largeBebasNeue = const TextStyle(
-  fontFamily: 'BebasNeue',
-  fontSize: 64,
-  fontWeight: FontWeight.w400,
-  color: neutralWhite,
-);
-
 // Color Light
 const Color lightBackground = Color(0xffF4F4F4);
 const Color appLightBackground = Color(0xffEFF2F3);
@@ -338,7 +324,7 @@ const Color active = Color(0xff20A95A);
 const Color focus = Color(0xffFED32C);
 const Color error = Color(0xffE53935);
 
-var primaryColor = Colors.blueGrey[800]!;
+var primaryColor = const Color(0xffFF0000);
 var secondaryColor = const Color(0xFF2A2D3E);
 var bgColor = const Color(0xFF212332);
 

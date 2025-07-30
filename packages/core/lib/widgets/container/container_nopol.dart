@@ -77,13 +77,13 @@ class _ContainerNomorPolisiState extends State<ContainerNomorPolisi> {
                   FilteringTextInputFormatter.allow(RegExp('[A-Za-z]'))
                 ],
                 textAlign: TextAlign.center,
-                style: largestBebasNeue.copyWith(color: widget.warnaFont),
+                style: Get.theme.textTheme.displayLarge?.copyWith(color: widget.warnaFont),
                 maxLength: 1,
                 decoration: InputDecoration(
                   hintText: "XX",
                   border: InputBorder.none,
                   counterText: "",
-                  hintStyle: largestBebasNeue.copyWith(color: widget.warnaFont),
+                  hintStyle: Get.theme.textTheme.displayLarge?.copyWith(color: widget.warnaFont),
                   labelStyle: TextStyle(
                     color: widget.warnaFont,
                   ),
@@ -101,13 +101,13 @@ class _ContainerNomorPolisiState extends State<ContainerNomorPolisi> {
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 textAlign: TextAlign.center,
-                style: largestBebasNeue.copyWith(color: widget.warnaFont),
+                style: Get.theme.textTheme.displayLarge?.copyWith(color: widget.warnaFont),
                 maxLength: 4,
                 decoration: InputDecoration(
                   hintText: "XXXX",
                   border: InputBorder.none,
                   counterText: "",
-                  hintStyle: largestBebasNeue.copyWith(color: widget.warnaFont),
+                  hintStyle: Get.theme.textTheme.displayLarge?.copyWith(color: widget.warnaFont),
                   labelStyle: TextStyle(
                     color: widget.warnaFont,
                   ),
@@ -127,16 +127,14 @@ class _ContainerNomorPolisiState extends State<ContainerNomorPolisi> {
                   FilteringTextInputFormatter.allow(RegExp('[A-Za-z]'))
                 ],
                 textAlign: TextAlign.center,
-                style: largestBebasNeue.copyWith(color: widget.warnaFont),
+                style: Get.theme.textTheme.displayLarge?.copyWith(color: widget.warnaFont),
                 maxLength: 3,
                 onEditingComplete: widget.onEditingComplete,
                 decoration: InputDecoration(
                   hintText: "XXX",
                   border: InputBorder.none,
                   counterText: "",
-                  hintStyle: largestBebasNeue.copyWith(
-                    color: widget.warnaFont,
-                  ),
+                  hintStyle: Get.theme.textTheme.displayLarge?.copyWith(color: widget.warnaFont),
                   labelStyle: TextStyle(
                     color: widget.warnaFont,
                   ),
