@@ -1,48 +1,104 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-migrate_working_dir/
+# # =========================
+# # Flutter & Dart defaults
+# # =========================
+# .dart_tool/
+# .packages
+# .pub-cache/
+# .pub/
+# build/
+# **/build/
+# **/ios/Flutter/.last_build_id
+# **/doc/api/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
+# # Generated files by Flutter
+# flutter_*.png
+# flutter_export_environment.sh
+# flutter_export_environment.bat
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# # =========================
+# # Firebase (optional)
+# # =========================
+# lib/firebase_options.dart
+# android/app/google-services.json
+# ios/Runner/GoogleService-Info.plist
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
+# # =========================
+# # Android-specific
+# # =========================
+# /android/.gradle/
+# /android/.idea/
+# /android/local.properties
+# /android/app/build/
+# /android/app/intermediates/
+# /android/app/outputs/
+# /android/app/debug/
+# /android/app/profile/
+# /android/app/release/
 
-# Symbolication related
-app.*.symbols
+# /.gradle
 
-# Obfuscation related
-app.*.map.json
+# *.apk
+# *.aab
+# *.ap_
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-.android/
+# # Android Studio specific
+# *.iml
+# *.iws
+# .idea/
 
+# # =========================
+# # iOS-specific
+# # =========================
+# /ios/.symlinks/
+# /ios/Pods/
+# /ios/.flutter-plugins
+# /ios/.flutter-plugins-dependencies
+# /ios/Flutter/Flutter.framework
+# /ios/Flutter/Flutter.podspec
+# /ios/Runner.xcworkspace/
+# /ios/Runner.xcodeproj/project.xcworkspace/
+# /ios/Flutter/ephemeral/
 
-# FVM Version Cache
-.fvm/
+# # =========================
+# # Web-specific
+# # =========================
+# web/.dart_tool/
+# web/build/
+
+# # =========================
+# # VSCode
+# # =========================
+# .vscode/
+
+# # =========================
+# # Miscellaneous
+# # =========================
+# *.lock
+# *.log
+# *.tmp
+# *.temp
+# *.swp
+# *.swo
+# *.class
+# *.pyc
+# .DS_Store
+# Thumbs.db
+
+# # JSON to Dart Model generator tracker
+# /.json_models/
+# models.jsonc
+
+# # Symbolication & obfuscation
+# app.*.symbols
+# app.*.map.json
+
+# # Output & cache artifacts
+# outputs.json
+# executionHistory.bin
+# executionHistory.lock
+# fileHashes.bin
+# fileHashes.lock
+# buildOutputCleanup.lock
+
+# .flutter-plugins
+# .flutter-plugins-dependencies

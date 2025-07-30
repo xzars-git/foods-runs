@@ -30,8 +30,6 @@ dependencies:
     path: packages/core
   base:
     path: packages/base
-  auth:
-    path: packages/auth
 
 dev_dependencies:
   flutter_test:
