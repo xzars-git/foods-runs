@@ -1,7 +1,6 @@
-
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:new_sakti_mobile/core.dart';
+import 'package:foods_run/core.dart';
 
 void main() async {
   await Setup.initialize();
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
                 child: child!,
               );
             },
-            title: 'Sakti Mobile',
+            title: 'Food Runs',
             debugShowCheckedModeBanner: false,
             theme: themeDataLight,
             darkTheme: themeDataDark,

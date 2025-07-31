@@ -1,9 +1,11 @@
 import 'package:core/core.dart';
-import 'package:new_sakti_mobile/core.dart';
+import 'package:foods_run/core.dart';
 
 final GoRouter router = GoRouter(
   navigatorKey: Get.navigatorKey,
-  initialLocation: RouterUtils.root,
+  initialLocation: SessionSplashScreenDatabase.isPassedSplashScreen == true
+      ? RouterUtils.beranda
+      : RouterUtils.root,
   errorBuilder: RouteConfigs.errorBuilder,
   routes: <RouteBase>[...baseRoutes],
 );

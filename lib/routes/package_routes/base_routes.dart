@@ -9,10 +9,10 @@ final List<GoRoute> baseRoutes = [
       return const SplashScreenView();
     },
   ),
-  // GoRoute(
-  //   path: RouterUtils.beranda,
-  //   builder: (BuildContext context, GoRouterState state) {
-  //     return const BerandaView();
-  //   },
-  // ),
+  GoRoute(
+    path: RouterUtils.beranda,
+    builder: (BuildContext context, GoRouterState state) {
+      return const BerandaView();
+    },
+  ),
 ];

@@ -1,4 +1,5 @@
-import 'package:core/themes/theme_config.dart';
+import 'package:base/beranda/view/beranda_view.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import '../controller/splash_screen_controller.dart';
 import '../widget/dot_widget.dart';
@@ -62,9 +63,12 @@ class SplashScreenView extends StatefulWidget {
                         curve: Curves.easeIn,
                       );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Selamat datang di aplikasi Food Runs!')),
-                      );
+                      SessionSplashScreenDatabase.save(isPassedSplashScreen: true);
+                      print("Save Session Splash Screen");
+                      SessionSplashScreenDatabase.load();
+                      if (SessionSplashScreenDatabase.isPassedSplashScreen == true) {
+                        Get.to(const BerandaView());
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
