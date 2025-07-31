@@ -196,6 +196,7 @@ TextStyle bodyXSmall(context) {
 
 // Color Light
 const Color lightBackground = Color(0xffF4F4F4);
+const Color linear2nd = Color(0xffFFF0F0);
 const Color appLightBackground = Color(0xffEFF2F3);
 
 // Color Dark

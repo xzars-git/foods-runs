@@ -64,7 +64,6 @@ class SplashScreenView extends StatefulWidget {
                       );
                     } else {
                       SessionSplashScreenDatabase.save(isPassedSplashScreen: true);
-                      print("Save Session Splash Screen");
                       SessionSplashScreenDatabase.load();
                       if (SessionSplashScreenDatabase.isPassedSplashScreen == true) {
                         Get.to(const BerandaView());
