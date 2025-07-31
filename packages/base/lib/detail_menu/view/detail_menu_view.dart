@@ -1,12 +1,11 @@
-import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import '../controller/detail_restoran_controller.dart';
+import '../controller/detail_menu_controller.dart';
 
-class DetailRestoranView extends StatefulWidget {
-  const DetailRestoranView({super.key});
+class DetailMenuView extends StatefulWidget {
+  const DetailMenuView({super.key});
 
-  Widget build(context, DetailRestoranController controller) {
+  Widget build(context, DetailMenuController controller) {
     controller.view = this;
     // Get top safe area padding (e.g., status bar height)
     final double topPadding = MediaQuery.of(context).padding.top;
@@ -173,50 +172,22 @@ class DetailRestoranView extends StatefulWidget {
                 top: 10.0,
                 bottom: 10.0 + bottomPadding,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        print("Lihat Menu tapped!");
-                        Get.to(const DetailMenuView());
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: neutralWhite,
-                        foregroundColor: primaryColor,
-                        side: BorderSide(color: primaryColor),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: const Text(
-                        "Lihat Menu",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+              child: ElevatedButton(
+                onPressed: () {
+                  print("Tunjukan Lokasi tapped!");
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  foregroundColor: neutralWhite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        print("Tunjukan Lokasi tapped!");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        foregroundColor: neutralWhite,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: const Text(
-                        "Tunjukan Lokasi",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
-                ],
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text(
+                  "Tunjukan Lokasi",
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
             ),
           ),
@@ -226,5 +197,5 @@ class DetailRestoranView extends StatefulWidget {
   }
 
   @override
-  State<DetailRestoranView> createState() => DetailRestoranController();
+  State<DetailMenuView> createState() => DetailMenuController();
 }

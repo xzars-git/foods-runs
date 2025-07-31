@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../view/detail_restoran_view.dart';
+import '../view/detail_menu_view.dart';
 
-class DetailRestoranController extends State<DetailRestoranView> {
-  static late DetailRestoranController instance;
-  late DetailRestoranView view;
+class DetailMenuController extends State<DetailMenuView> {
+  static late DetailMenuController instance;
+  late DetailMenuView view;
 
   @override
   void initState() {
