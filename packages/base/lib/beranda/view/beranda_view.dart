@@ -96,12 +96,6 @@ class BerandaView extends StatefulWidget {
                       FormSearchWidget(
                         controller: controller,
                       ),
-                      const SizedBox(
-                        height: 32.0,
-                      ),
-                      if (controller.focusNode.hasFocus &&
-                          controller.filteredRestaurants.isNotEmpty)
-                        ListCardOutputFormSearch(controller: controller),
                     ],
                   ),
                 ),
@@ -124,6 +118,8 @@ class BerandaView extends StatefulWidget {
               ],
             ),
           ),
+          if (controller.focusNode.hasFocus && controller.filteredRestaurants.isNotEmpty)
+            ListCardOutputFormSearch(controller: controller),
         ],
       ),
     );
