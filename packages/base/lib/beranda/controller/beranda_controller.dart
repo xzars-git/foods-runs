@@ -1,3 +1,4 @@
+import 'package:base/base.dart';
 import 'package:flutter/material.dart';
 import '../view/beranda_view.dart';
 
@@ -20,6 +21,12 @@ class BerandaController extends State<BerandaView> {
     'Sushi Tei 2',
     'Pizza Hut 2',
   ];
+
+  final List<Widget> navigationPages = const [
+    BerandaView(),
+    SplashScreenView(),
+  ];
+  int navigationIndex = 0;
 
   final Map<String, Map<String, String>> restaurantImages = {
     'McDonald’s': {
