@@ -62,7 +62,7 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
             itemCount: widget.imageUrls.length,
             itemBuilder: (_, i) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(

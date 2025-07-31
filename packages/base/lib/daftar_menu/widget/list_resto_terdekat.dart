@@ -15,7 +15,7 @@ class _ListRestoTerdekatWidgetState extends State<ListRestoTerdekatWidget> {
   Widget build(BuildContext context) {
     DaftarMenuController controller = widget.controller;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

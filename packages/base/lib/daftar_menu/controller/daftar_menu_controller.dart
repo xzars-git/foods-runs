@@ -89,6 +89,37 @@ class DaftarMenuController extends State<DaftarMenuView> {
     });
   }
 
+  final List<Map<String, String>> makanan = [
+    {
+      'nama': 'Chicken Spagetti',
+      'deskripsi': '1 Big Pack',
+      'harga': '\$7',
+      'gambar':
+          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
+    },
+    {
+      'nama': 'Jollof Rice',
+      'deskripsi': '1 Combo pack',
+      'harga': '\$10',
+      'gambar':
+          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
+    },
+    {
+      'nama': 'Fruity Pancakes',
+      'deskripsi': 'Noodle Home',
+      'harga': '\$12',
+      'gambar':
+          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
+    },
+    {
+      'nama': 'Pepper Pizza',
+      'deskripsi': '5kg box of Pizza',
+      'harga': '\$15',
+      'gambar':
+          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
+    },
+  ];
+
   @override
   void initState() {
     instance = this;

@@ -1,4 +1,5 @@
 import 'package:base/base.dart';
+import 'package:base/daftar_menu/view/daftar_menu_view.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import '../controller/detail_restoran_controller.dart';
@@ -179,7 +180,7 @@ class DetailRestoranView extends StatefulWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         print("Lihat Menu tapped!");
-                        Get.to(const DetailMenuView());
+                        Get.to(const DaftarMenuView());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: neutralWhite,
