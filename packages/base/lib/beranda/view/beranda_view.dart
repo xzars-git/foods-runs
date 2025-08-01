@@ -46,7 +46,9 @@ class BerandaView extends StatefulWidget {
             unselectedItemColor: gray500,
             onTap: (index) {
               controller.navigationIndex = index;
-              controller.update();
+              if (controller.navigationIndex == 1) {
+                newRouter.replace(RouterUtils.daftarRestoran);
+              }
             },
             items: const [
               BottomNavigationBarItem(
@@ -54,8 +56,8 @@ class BerandaView extends StatefulWidget {
                 label: 'Beranda',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.location_on),
-                label: 'Lokasi',
+                icon: Icon(Icons.restaurant),
+                label: 'Daftar Restoran',
               ),
             ],
           ),

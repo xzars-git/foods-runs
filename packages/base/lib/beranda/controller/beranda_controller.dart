@@ -1,4 +1,5 @@
 import 'package:base/base.dart';
+import 'package:base/daftar_restoran/view/daftar_restoran_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +19,9 @@ class BerandaController extends State<BerandaView> {
   List<RestaurantModel> allRestaurantsFromFirestore = [];
   List<RestaurantModel> filteredRestaurants = [];
 
-  final List<Widget> navigationPages = const [
-    BerandaView(),
-    SplashScreenView(),
+  final List<Widget> navigationPages = [
+    const BerandaView(),
+    const DaftarRestoranView(),
   ];
   int navigationIndex = 0;
 
