@@ -1,8 +1,6 @@
 import 'package:base/base.dart';
-import 'package:base/set_route/view/set_route_view.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import '../controller/detail_menu_controller.dart';
 
 class DetailMenuView extends StatefulWidget {

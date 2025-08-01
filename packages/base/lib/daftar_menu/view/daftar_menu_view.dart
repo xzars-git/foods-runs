@@ -1,7 +1,6 @@
 import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import '../controller/daftar_menu_controller.dart';
 import 'dart:math' as math;
 

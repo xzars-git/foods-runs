@@ -1,4 +1,3 @@
-import 'package:base/beranda/view/beranda_view.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import '../controller/splash_screen_controller.dart';

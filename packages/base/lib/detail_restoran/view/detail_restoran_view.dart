@@ -3,7 +3,6 @@ import 'package:base/beranda/controller/beranda_controller.dart';
 import 'package:base/daftar_menu/view/daftar_menu_view.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import '../controller/detail_restoran_controller.dart';
 
 class DetailRestoranView extends StatefulWidget {

@@ -388,7 +388,7 @@ class SetRouteView extends StatefulWidget {
     );
   }
 
-  void _showInstructions(BuildContext context, SetRouteController controller) {
+  void showInstructions(BuildContext context, SetRouteController controller) {
     if (controller.routeInstructions.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

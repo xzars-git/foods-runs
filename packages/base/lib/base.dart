@@ -16,3 +16,4 @@ export 'dart:convert';
 export 'dart:developer';
 export 'package:flutter_map/flutter_map.dart';
 export 'package:geolocator/geolocator.dart';
+export 'package:geocoding/geocoding.dart';
