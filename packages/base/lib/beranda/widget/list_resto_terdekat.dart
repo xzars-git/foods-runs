@@ -2,16 +2,7 @@ import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 import '../controller/beranda_controller.dart';
-
-// Sebuah class sederhana untuk menampung data restoran dan jarak yang dihitung
-class _RestaurantWithDistance {
-  final RestaurantModel restaurant;
-  final double distanceInKm;
-
-  _RestaurantWithDistance({required this.restaurant, required this.distanceInKm});
-}
 
 class ListRestoTerdekatWidget extends StatelessWidget {
   final BerandaController controller;
@@ -40,8 +31,6 @@ class ListRestoTerdekatWidget extends StatelessWidget {
       );
     }
 
-    final currentPosition = controller.currentPosition!;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -68,29 +57,15 @@ class ListRestoTerdekatWidget extends StatelessWidget {
                   return const Center(child: Text("Tidak ada restoran ditemukan."));
                 }
 
-                // Ubah snapshot data menjadi list of RestaurantModel
-                final List<RestaurantModel> restaurants =
-                    snapshot.data!.docs.map((doc) => RestaurantModel.fromFirestore(doc)).toList();
+                // Panggil fungsi di controller untuk memproses snapshot
+                final List<RestaurantWithDistance> restaurantsWithDistance =
+                    controller.getRestaurantsWithDistance(snapshot.data!);
 
-                // Hitung jarak dan buat list baru
-                final List<_RestaurantWithDistance> restaurantsWithDistance = [];
-                for (var restaurant in restaurants) {
-                  final distanceInMeters = Geolocator.distanceBetween(
-                    currentPosition.latitude,
-                    currentPosition.longitude,
-                    restaurant.latitude,
-                    restaurant.longitude,
-                  );
-                  restaurantsWithDistance.add(
-                    _RestaurantWithDistance(
-                      restaurant: restaurant,
-                      distanceInKm: distanceInMeters / 1000,
-                    ),
-                  );
+                if (snapshot.data!.docs.isNotEmpty) {
+                  controller.allRestaurantsFromFirestore =
+                      snapshot.data!.docs.map((doc) => RestaurantModel.fromFirestore(doc)).toList();
+                  controller.onSearchChanged();
                 }
-
-                // Urutkan daftar restoran berdasarkan jarak dari yang terdekat
-                restaurantsWithDistance.sort((a, b) => a.distanceInKm.compareTo(b.distanceInKm));
 
                 return GridView.builder(
                   itemCount: restaurantsWithDistance.length,
@@ -171,7 +146,6 @@ class ListRestoTerdekatWidget extends StatelessWidget {
                                     ],
                                   ),
                                   const SizedBox(height: 6),
-                                  // Tampilkan jarak ke restoran
                                   Text(
                                     "${Helper.formatDistance(restaurantWithDistance.distanceInKm)} km dari Anda",
                                     style: Get.theme.textTheme.bodyMedium?.copyWith(color: gray600),

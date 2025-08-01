@@ -90,7 +90,9 @@ class BerandaView extends StatefulWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      const LocationHeader(),
+                      LocationHeader(
+                        controller: controller,
+                      ),
                       const SizedBox(height: 16.0),
                       FormSearchWidget(
                         controller: controller,

@@ -1,6 +1,8 @@
 import 'package:base/base.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class BerandaController extends State<BerandaView> {
@@ -16,7 +18,7 @@ class BerandaController extends State<BerandaView> {
   String locationStatusMessage = 'Mencari lokasi...';
 
   late Stream<QuerySnapshot> restaurantStream;
-  List<RestaurantModel> _allRestaurantsFromFirestore = [];
+  List<RestaurantModel> allRestaurantsFromFirestore = [];
   List<RestaurantModel> filteredRestaurants = [];
 
   final List<Widget> navigationPages = const [
@@ -25,18 +27,46 @@ class BerandaController extends State<BerandaView> {
   ];
   int navigationIndex = 0;
 
-  // Fungsi untuk memfilter data restoran dari Firestore
   void onSearchChanged() {
     final keyWord = searchController.text.toLowerCase();
-    setState(() {
-      filteredRestaurants = _allRestaurantsFromFirestore
-          .where((restaurant) => restaurant.nama.toLowerCase().contains(keyWord))
-          .toList();
-    });
+    filteredRestaurants = allRestaurantsFromFirestore
+        .where((restaurant) => restaurant.nama.toLowerCase().contains(keyWord))
+        .toList();
   }
 
-  // Fungsi untuk mendapatkan lokasi pengguna
-  Future<void> _fetchCurrentLocation() async {
+  // Fungsi untuk memproses snapshot dari Firestore
+  List<RestaurantWithDistance> getRestaurantsWithDistance(QuerySnapshot snapshot) {
+    if (currentPosition == null) {
+      return []; // Mengembalikan list kosong jika lokasi belum didapat
+    }
+
+    final List<RestaurantModel> restaurants =
+        snapshot.docs.map((doc) => RestaurantModel.fromFirestore(doc)).toList();
+
+    final List<RestaurantWithDistance> restaurantsWithDistance = [];
+    for (var restaurant in restaurants) {
+      final distanceInMeters = Geolocator.distanceBetween(
+        currentPosition!.latitude,
+        currentPosition!.longitude,
+        restaurant.latitude,
+        restaurant.longitude,
+      );
+      restaurantsWithDistance.add(
+        RestaurantWithDistance(
+          restaurant: restaurant,
+          distanceInKm: distanceInMeters / 1000,
+        ),
+      );
+    }
+
+    // Urutkan daftar restoran berdasarkan jarak dari yang terdekat
+    restaurantsWithDistance.sort((a, b) => a.distanceInKm.compareTo(b.distanceInKm));
+
+    return restaurantsWithDistance;
+  }
+
+  // Fungsi untuk mendapatkan lokasi pengguna dan mengubahnya menjadi alamat
+  Future<void> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -73,16 +103,32 @@ class BerandaController extends State<BerandaView> {
       final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-      setState(() {
-        currentPosition = position;
-        isLoadingLocation = false;
-        locationStatusMessage = 'Lokasi berhasil ditemukan.';
-      });
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks.first;
+        setState(() {
+          currentPosition = position;
+          locationStatusMessage = "${placemark.street}, ${placemark.subLocality}";
+          isLoadingLocation = false;
+        });
+      } else {
+        setState(() {
+          currentPosition = position;
+          locationStatusMessage = "Lokasi tidak ditemukan.";
+          isLoadingLocation = false;
+        });
+      }
     } catch (e) {
       setState(() {
-        locationStatusMessage = "Gagal mendapatkan lokasi: ${e.toString()}";
+        locationStatusMessage = "Gagal mendapatkan lokasi.";
         isLoadingLocation = false;
       });
+      print(e); // Cetak error untuk debugging
     }
   }
 
@@ -90,6 +136,7 @@ class BerandaController extends State<BerandaView> {
   void initState() {
     super.initState();
     instance = this;
+    searchController.text = "";
     searchController.addListener(onSearchChanged);
     focusNode.addListener(() {
       setState(() {
@@ -98,14 +145,7 @@ class BerandaController extends State<BerandaView> {
     });
 
     restaurantStream = FirebaseFirestore.instance.collection('restaurants').snapshots();
-    _fetchCurrentLocation();
-
-    // Mendengarkan stream dan mengisi data restoran
-    restaurantStream.listen((snapshot) {
-      _allRestaurantsFromFirestore =
-          snapshot.docs.map((doc) => RestaurantModel.fromFirestore(doc)).toList();
-      onSearchChanged(); // Perbarui hasil pencarian setiap kali data baru masuk
-    });
+    getCurrentLocation();
   }
 
   @override

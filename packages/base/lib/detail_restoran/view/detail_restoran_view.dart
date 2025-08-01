@@ -1,4 +1,5 @@
 import 'package:base/base.dart';
+import 'package:base/beranda/controller/beranda_controller.dart';
 import 'package:base/daftar_menu/view/daftar_menu_view.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,8 @@ class DetailRestoranView extends StatefulWidget {
             left: 16,
             child: InkWell(
               onTap: () {
-                Navigator.of(context).pop();
+                BerandaController.instance.searchController.text = "";
+                Get.back();
               },
               borderRadius: BorderRadius.circular(12),
               child: Container(
