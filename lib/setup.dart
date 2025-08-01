@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:core/database/theme_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,11 +11,7 @@ class Setup {
   static Future initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    // if (!kIsWeb) {
-    //   await Firebase.initializeApp(
-    //     options: DefaultFirebaseOptions.currentPlatform,
-    //   );
-    // }
+    await Firebase.initializeApp();
 
     // Set preferred orientation
     await SystemChrome.setPreferredOrientations([
