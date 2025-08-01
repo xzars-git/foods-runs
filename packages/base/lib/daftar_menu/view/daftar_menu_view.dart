@@ -7,8 +7,11 @@ import 'dart:math' as math;
 import '../widget/form_search.dart';
 
 class DaftarMenuView extends StatefulWidget {
+  final double latitude;
+  final double longitude;
   final Map<String, dynamic> dataDaftarMenu;
-  const DaftarMenuView({super.key, required this.dataDaftarMenu});
+  const DaftarMenuView(
+      {super.key, required this.dataDaftarMenu, required this.latitude, required this.longitude});
 
   Widget build(context, DaftarMenuController controller) {
     controller.view = this;
@@ -140,7 +143,11 @@ class DaftarMenuView extends StatefulWidget {
 
                               return InkWell(
                                 onTap: () {
-                                  Get.to(const DetailMenuView());
+                                  Get.to(DetailMenuView(
+                                    latitude: latitude,
+                                    longitude: longitude,
+                                    dataDetailMenu: item,
+                                  ));
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(bottom: 16),

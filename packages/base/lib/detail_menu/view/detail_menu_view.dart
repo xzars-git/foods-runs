@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import '../controller/detail_menu_controller.dart';
 
 class DetailMenuView extends StatefulWidget {
-  const DetailMenuView({super.key});
+  final double longitude;
+  final double latitude;
+  // Menerima data menu yang dipilih
+  final Map<String, dynamic> dataDetailMenu;
+  const DetailMenuView({super.key, required this.dataDetailMenu, required this.latitude, required this.longitude});
 
   Widget build(context, DetailMenuController controller) {
     controller.view = this;
@@ -17,6 +21,16 @@ class DetailMenuView extends StatefulWidget {
     // Define how much the content card overlaps the image
     const double contentOverlap = 40.0;
 
+    // Helper function untuk format harga dengan pemisah ribuan
+    String formatRupiah(dynamic number) {
+      if (number == null) {
+        return 'Harga N/A';
+      }
+      final numberString = number.toString();
+      final regex = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+      return 'Rp. ${numberString.replaceAllMapped(regex, (Match m) => '${m[1]}.')}';
+    }
+
     return Scaffold(
       backgroundColor: neutralWhite,
       body: Stack(
@@ -27,8 +41,14 @@ class DetailMenuView extends StatefulWidget {
             right: 0,
             height: imageHeight,
             child: Image.network(
-              'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp', // Replace with your restaurant image URL
+              dataDetailMenu['image_url'] ??
+                  'https://placehold.co/600x400/e0e0e0/ffffff?text=No+Image',
               fit: BoxFit.cover,
+              // Fallback jika image_url null atau gagal dimuat
+              errorBuilder: (context, error, stackTrace) {
+                return Image.network('https://placehold.co/600x400/e0e0e0/ffffff?text=No+Image',
+                    fit: BoxFit.cover);
+              },
             ),
           ),
           Positioned(
@@ -94,7 +114,7 @@ class DetailMenuView extends StatefulWidget {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: const Text(
-                          "Mc Donald's",
+                          "Mc Donald's", // Menggunakan data statis karena tidak ada di map
                           style: TextStyle(
                             color: red500,
                             fontSize: 12,
@@ -106,7 +126,7 @@ class DetailMenuView extends StatefulWidget {
                     const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Text("Chicken Burger Promo Pack",
+                      child: Text(dataDetailMenu['nama'] ?? 'Nama Tidak Tersedia',
                           style: Get.theme.textTheme.displayLarge),
                     ),
                     const SizedBox(
@@ -125,26 +145,13 @@ class DetailMenuView extends StatefulWidget {
                                 children: [
                                   const Icon(Icons.star, color: yellow700, size: 18),
                                   const SizedBox(width: 4),
-                                  Text("4,8 Rating", style: Get.theme.textTheme.bodyMedium),
+                                  Text("${dataDetailMenu['rating']?.toString() ?? 'N/A'} Rating",
+                                      style: Get.theme.textTheme.bodyMedium),
                                 ],
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                "Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum. Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.",
-                                style: Get.theme.textTheme.bodyMedium
-                                    ?.copyWith(color: gray800, height: 1.25),
-                                textAlign: TextAlign.justify,
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                "Dolore reprehenderit magna aute dolore cillum eu. Aliquip deserunt ut ea aliqua tempor laborum enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                                style: Get.theme.textTheme.bodyMedium
-                                    ?.copyWith(color: gray800, height: 1.25),
-                                textAlign: TextAlign.justify,
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+                                dataDetailMenu['deskripsi'] ?? 'Deskripsi tidak tersedia',
                                 style: Get.theme.textTheme.bodyMedium
                                     ?.copyWith(color: gray800, height: 1.25),
                                 textAlign: TextAlign.justify,
@@ -173,8 +180,7 @@ class DetailMenuView extends StatefulWidget {
                 bottom: 10.0 + bottomPadding,
               ),
               child: ElevatedButton(
-                onPressed: () {
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   foregroundColor: neutralWhite,
@@ -184,7 +190,7 @@ class DetailMenuView extends StatefulWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text(
-                  "Tunjukan Lokasi",
+                  "Menuju Lokasi Restoran Sekarang",
                   style: TextStyle(fontSize: 16),
                 ),
               ),

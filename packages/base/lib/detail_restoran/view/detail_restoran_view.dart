@@ -175,6 +175,8 @@ class DetailRestoranView extends StatefulWidget {
                       onPressed: () {
                         Get.to(DaftarMenuView(
                           dataDaftarMenu: dataRestoran.menu,
+                          latitude: dataRestoran.latitude,
+                          longitude: dataRestoran.longitude,
                         ));
                       },
                       style: ElevatedButton.styleFrom(

@@ -30,9 +30,8 @@ class RestaurantModel {
       id: doc.id,
       nama: data['nama'] ?? 'N/A',
       alamat: data['alamat'] ?? 'N/A',
-      latitude: (data['latitude'] is String) ? double.parse(data['latitude']) : data['latitude'],
-      longitude:
-          (data['longitude'] is String) ? double.parse(data['longitude']) : data['longitude'],
+      latitude: data['latitude'],
+      longitude: data['longitude'],
       imageUrl: data['image_url'] ?? '',
       deskripsi: data['deskripsi'] ?? 'N/A',
       rating: (data['rating'] is String)
