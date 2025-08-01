@@ -16,8 +16,6 @@ class DaftarMenuView extends StatefulWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    print("Debug View: Membangun ListView. Jumlah item: ${controller.filteredMenu.length}");
-
     return Scaffold(
         backgroundColor: neutralWhite,
         bottomNavigationBar: Container(
