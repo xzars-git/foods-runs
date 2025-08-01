@@ -174,7 +174,6 @@ class DetailMenuView extends StatefulWidget {
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  print("Tunjukan Lokasi tapped!");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,

@@ -1,6 +1,5 @@
 import 'package:base/base.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -128,7 +127,6 @@ class BerandaController extends State<BerandaView> {
         locationStatusMessage = "Gagal mendapatkan lokasi.";
         isLoadingLocation = false;
       });
-      print(e); // Cetak error untuk debugging
     }
   }
 

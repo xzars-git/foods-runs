@@ -173,7 +173,6 @@ class DetailRestoranView extends StatefulWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        print("Lihat Menu tapped!");
                         Get.to(const DaftarMenuView());
                       },
                       style: ElevatedButton.styleFrom(
@@ -195,7 +194,6 @@ class DetailRestoranView extends StatefulWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        print("Tunjukan Lokasi tapped!");
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,

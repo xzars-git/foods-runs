@@ -31,10 +31,7 @@ class Setup {
 
       await SessionSplashScreenDatabase.load();
       await ThemeDatabase.load();
-      print("IS Success Load");
     } catch (e) {
-      // Fix masalah dengan database
-      print("IS CATCH $e");
       await Hive.deleteBoxFromDisk('foods_run');
     }
 
