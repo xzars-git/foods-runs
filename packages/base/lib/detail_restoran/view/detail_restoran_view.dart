@@ -5,18 +5,14 @@ import 'package:flutter/material.dart';
 import '../controller/detail_restoran_controller.dart';
 
 class DetailRestoranView extends StatefulWidget {
-  const DetailRestoranView({super.key});
+  final RestaurantModel dataRestoran;
+  const DetailRestoranView({super.key, required this.dataRestoran});
 
   Widget build(context, DetailRestoranController controller) {
     controller.view = this;
-    // Get top safe area padding (e.g., status bar height)
     final double topPadding = MediaQuery.of(context).padding.top;
-    // Get bottom safe area padding (e.g., home indicator)
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
-
-    // Define the height of the hero image section
     const double imageHeight = 300.0;
-    // Define how much the content card overlaps the image
     const double contentOverlap = 40.0;
 
     return Scaffold(
@@ -29,8 +25,14 @@ class DetailRestoranView extends StatefulWidget {
             right: 0,
             height: imageHeight,
             child: Image.network(
-              'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp', // Replace with your restaurant image URL
+              dataRestoran.imageUrl,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey,
+                  child: const Icon(Icons.broken_image, color: Colors.white),
+                );
+              },
             ),
           ),
           Positioned(
@@ -44,10 +46,11 @@ class DetailRestoranView extends StatefulWidget {
               child: Container(
                 padding: const EdgeInsets.only(left: 22, right: 10, bottom: 16, top: 16),
                 decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                    color: red100.withOpacity(0.5)),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                  color: red100.withOpacity(0.5),
+                ),
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Get.theme.colorScheme.primary,
@@ -63,7 +66,7 @@ class DetailRestoranView extends StatefulWidget {
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: neutralWhite,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
@@ -89,27 +92,29 @@ class DetailRestoranView extends StatefulWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Text(
+                        dataRestoran.nama,
+                        style: Get.theme.textTheme.displayLarge,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: red50,
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: const Text(
-                          "Mc Donald's",
-                          style: TextStyle(
+                        child: Text(
+                          dataRestoran.alamat,
+                          style: const TextStyle(
                             color: red500,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Text("Chicken Burger Promo Pack",
-                          style: Get.theme.textTheme.displayLarge),
                     ),
                     const SizedBox(
                       height: 12.0,
@@ -127,26 +132,13 @@ class DetailRestoranView extends StatefulWidget {
                                 children: [
                                   const Icon(Icons.star, color: yellow700, size: 18),
                                   const SizedBox(width: 4),
-                                  Text("4,8 Rating", style: Get.theme.textTheme.bodyMedium),
+                                  Text("${dataRestoran.rating} Rating",
+                                      style: Get.theme.textTheme.bodyMedium),
                                 ],
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                "Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum. Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat at ex Lorem laboris labore aliqua ad du duis eu laborum.",
-                                style: Get.theme.textTheme.bodyMedium
-                                    ?.copyWith(color: gray800, height: 1.25),
-                                textAlign: TextAlign.justify,
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                "Dolore reprehenderit magna aute dolore cillum eu. Aliquip deserunt ut ea aliqua tempor laborum enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                                style: Get.theme.textTheme.bodyMedium
-                                    ?.copyWith(color: gray800, height: 1.25),
-                                textAlign: TextAlign.justify,
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+                                dataRestoran.deskripsi,
                                 style: Get.theme.textTheme.bodyMedium
                                     ?.copyWith(color: gray800, height: 1.25),
                                 textAlign: TextAlign.justify,

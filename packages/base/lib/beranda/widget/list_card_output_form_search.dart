@@ -44,7 +44,9 @@ class _ListCardOutputFormSearchState extends State<ListCardOutputFormSearch> {
                     controller.searchController.text = restaurant.nama;
                     controller.focusNode.unfocus();
                     // Anda bisa meneruskan data restoran ke halaman detail
-                    Get.to(const DetailRestoranView());
+                    Get.to(DetailRestoranView(
+                      dataRestoran: restaurant,
+                    ));
                   },
                   child: Card(
                     margin: const EdgeInsets.only(bottom: 12),

@@ -117,7 +117,7 @@ class DaftarMenuView extends StatefulWidget {
                         const SizedBox(
                           height: 16.0,
                         ),
-                        FormSearchWidget(
+                        FormSearchDaftarMenuWidget(
                           controller: controller,
                         ),
                       ],

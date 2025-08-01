@@ -2,15 +2,15 @@ import 'package:base/daftar_menu/controller/daftar_menu_controller.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-class FormSearchWidget extends StatefulWidget {
+class FormSearchDaftarMenuWidget extends StatefulWidget {
   final DaftarMenuController controller;
-  const FormSearchWidget({super.key, required this.controller});
+  const FormSearchDaftarMenuWidget({super.key, required this.controller});
 
   @override
-  State<FormSearchWidget> createState() => _FormSearchWidgetState();
+  State<FormSearchDaftarMenuWidget> createState() => _FormSearchDaftarMenuWidgetState();
 }
 
-class _FormSearchWidgetState extends State<FormSearchWidget> {
+class _FormSearchDaftarMenuWidgetState extends State<FormSearchDaftarMenuWidget> {
   @override
   Widget build(BuildContext context) {
     DaftarMenuController controller = widget.controller;

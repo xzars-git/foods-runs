@@ -106,79 +106,88 @@ class ListRestoTerdekatWidget extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final restaurantWithDistance = restaurantsWithDistance[index];
                     final restaurant = restaurantWithDistance.restaurant;
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: neutralWhite,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: gray500,
-                            blurRadius: 5,
-                            offset: Offset(0, 2),
+                    return InkWell(
+                      onTap: () {
+                        Get.to(
+                          DetailRestoranView(
+                            dataRestoran: restaurant,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                            child: Image.network(
-                              restaurant.imageUrl,
-                              height: 80,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  height: 80,
-                                  width: double.infinity,
-                                  color: gray700,
-                                  child: const Icon(Icons.broken_image, color: neutralWhite),
-                                );
-                              },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: neutralWhite,
+                          boxShadow: const [
+                            BoxShadow(
+                              color: gray500,
+                              blurRadius: 5,
+                              offset: Offset(0, 2),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  restaurant.nama,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 6),
-                                Row(
-                                  children: [
-                                    const Icon(Icons.star, color: yellow700, size: 16),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      restaurant.rating.toStringAsFixed(1),
-                                      style: Get.theme.textTheme.bodyMedium,
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                              child: Image.network(
+                                restaurant.imageUrl,
+                                height: 80,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: 80,
+                                    width: double.infinity,
+                                    color: gray700,
+                                    child: const Icon(Icons.broken_image, color: neutralWhite),
+                                  );
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    restaurant.nama,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 6),
-                                // Tampilkan jarak ke restoran
-                                Text(
-                                  "${Helper.formatDistance(restaurantWithDistance.distanceInKm)} km dari Anda",
-                                  style: Get.theme.textTheme.bodyMedium?.copyWith(color: gray600),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  restaurant.deskripsi,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Get.theme.textTheme.bodyMedium?.copyWith(color: gray600),
-                                ),
-                              ],
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.star, color: yellow700, size: 16),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        restaurant.rating.toStringAsFixed(1),
+                                        style: Get.theme.textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  // Tampilkan jarak ke restoran
+                                  Text(
+                                    "${Helper.formatDistance(restaurantWithDistance.distanceInKm)} km dari Anda",
+                                    style: Get.theme.textTheme.bodyMedium?.copyWith(color: gray600),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    restaurant.deskripsi,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Get.theme.textTheme.bodyMedium?.copyWith(color: gray600),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
