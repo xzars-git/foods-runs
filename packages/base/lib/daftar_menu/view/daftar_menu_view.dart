@@ -5,10 +5,6 @@ import '../controller/daftar_menu_controller.dart';
 import 'dart:math' as math;
 
 import '../widget/form_search.dart';
-import '../widget/image_slider.dart';
-import '../widget/list_card_output_form_search.dart';
-import '../widget/list_resto_terdekat.dart';
-import '../widget/location_header.dart';
 
 class DaftarMenuView extends StatefulWidget {
   const DaftarMenuView({super.key});

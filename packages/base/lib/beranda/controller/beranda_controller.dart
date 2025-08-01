@@ -1,6 +1,6 @@
 import 'package:base/base.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../view/beranda_view.dart';
 
 class BerandaController extends State<BerandaView> {
   static late BerandaController instance;
@@ -21,6 +21,9 @@ class BerandaController extends State<BerandaView> {
     'Sushi Tei 2',
     'Pizza Hut 2',
   ];
+
+  // Stream untuk mendengarkan perubahan data dari Firestore secara real-time
+  late Stream<QuerySnapshot> restaurantStream;
 
   final List<Widget> navigationPages = const [
     BerandaView(),
@@ -98,6 +101,9 @@ class BerandaController extends State<BerandaView> {
         isSearching = focusNode.hasFocus;
       });
     });
+
+    // Inisialisasi stream untuk mengambil data restoran dari Firestore
+    restaurantStream = FirebaseFirestore.instance.collection('restaurants').snapshots();
     super.initState();
   }
 

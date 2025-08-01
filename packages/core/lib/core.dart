@@ -25,7 +25,6 @@ export 'package:pull_to_refresh_new/pull_to_refresh.dart';
 export 'package:fleather/fleather.dart';
 export 'package:ota_update/ota_update.dart';
 export 'package:url_launcher/url_launcher.dart';
-export 'package:flutter_pdfview/flutter_pdfview.dart';
 export 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
 //Database

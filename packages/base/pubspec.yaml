@@ -11,12 +11,19 @@ dependencies:
   flutter:
     sdk: flutter
   pluto_grid_plus: ^8.4.0
-  geolocator: ^12.0.0
-  pdf: ^3.10.6
   printing: ^5.11.1
   core:
     path: ../core
   super_tooltip: ^2.0.9
+
+  geolocator: ^12.0.0
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  http: ^1.2.2
+  get: ^4.6.6
+  flutter_dotenv: ^5.1.0
+  geocoding: ^3.0.0
+  cloud_firestore: ^4.17.3
 
 publish_to: none
 
