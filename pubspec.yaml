@@ -74,27 +74,7 @@ flutter:
           style: italic
 
   assets:
-    - assets/files/
     - assets/fonts/
-    - assets/icons/chevron/
-    - assets/icons/input/
-    - assets/icons/message/
-    - assets/icons/misc/
-    - assets/icons/state/
-    - assets/icons/layanan/
-    - assets/icons/awal_akhir_hari/
-    - assets/icons/info_progresif/
-    - assets/icons/detail_kendaraan/
-    - assets/icons/pilih_dokumen/
     - assets/images/
     - assets/images/svg/
-    - assets/images/info_progresif/
-    - assets/images/lepas_kepemilikan/
-    - assets/images/logo/
-    - assets/images/vehicle/
-    - assets/images/layanan/
-    - assets/images/menu/
-    - assets/images/profile/
-    - assets/images/ilustrasi/
-    - assets/images/state/
     - .env

@@ -5,7 +5,6 @@ it means you have to rename it to something more unique.
 */
 export 'package:foods_run/core_package.dart';
 // export 'package:foods_run/firebase_options.dart';
-export 'package:foods_run/load_assets.dart';
 export 'package:foods_run/providers.dart';
 export 'package:foods_run/routes/package_routes/base_routes.dart';
 export 'package:foods_run/routes/routes.dart';

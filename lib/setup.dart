@@ -23,9 +23,6 @@ class Setup {
       DeviceOrientation.portraitDown,
     ]);
 
-    // Load SVG
-    await loadSVG();
-
     // Initialize Hive
     try {
       var path = await getTemporaryDirectory();
