@@ -1,7 +1,7 @@
 import 'package:base/base.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart'; // Impor geolocator
+import 'package:geolocator/geolocator.dart';
 
 class BerandaController extends State<BerandaView> {
   static late BerandaController instance;
@@ -11,28 +11,13 @@ class BerandaController extends State<BerandaView> {
   final FocusNode focusNode = FocusNode();
   bool isSearching = false;
 
-  // Variabel untuk menangani lokasi pengguna
   Position? currentPosition;
   bool isLoadingLocation = true;
   String locationStatusMessage = 'Mencari lokasi...';
 
-  // Stream untuk mendengarkan perubahan data dari Firestore secara real-time
   late Stream<QuerySnapshot> restaurantStream;
-
-  final List<String> allRestaurants = [
-    'McDonald’s',
-    'Burger King',
-    'KFC',
-    'Sushi Tei',
-    'Pizza Hut',
-    'McDonald’s 2',
-    'Burger King 2',
-    'KFC 2',
-    'Sushi Tei 2',
-    'Sushi Tei 2',
-    'Pizza Hut 2',
-  ];
-  List<String> filteredRestaurants = [];
+  List<RestaurantModel> _allRestaurantsFromFirestore = [];
+  List<RestaurantModel> filteredRestaurants = [];
 
   final List<Widget> navigationPages = const [
     BerandaView(),
@@ -40,63 +25,13 @@ class BerandaController extends State<BerandaView> {
   ];
   int navigationIndex = 0;
 
-  final Map<String, Map<String, String>> restaurantImages = {
-    'McDonald’s': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Restoran cepat saji populer dunia.',
-    },
-    'Burger King': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Nikmati burger bakar khas.',
-    },
-    'KFC': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Ayam goreng krispi dengan resep rahasia.',
-    },
-    'Sushi Tei': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pilihan sushi segar dan lezat.',
-    },
-    'Pizza Hut': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pizza pan klasik dan pasta creamy.',
-    },
-    'McDonald’s 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Restoran cepat saji populer dunia.',
-    },
-    'Burger King 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Nikmati burger bakar khas.',
-    },
-    'KFC 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Ayam goreng krispi dengan resep rahasia.',
-    },
-    'Sushi Tei 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pilihan sushi segar dan lezat.',
-    },
-    'Pizza Hut 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pizza pan klasik dan pasta creamy.',
-    },
-  };
-
+  // Fungsi untuk memfilter data restoran dari Firestore
   void onSearchChanged() {
     final keyWord = searchController.text.toLowerCase();
     setState(() {
-      filteredRestaurants = allRestaurants.where((r) => r.toLowerCase().contains(keyWord)).toList();
+      filteredRestaurants = _allRestaurantsFromFirestore
+          .where((restaurant) => restaurant.nama.toLowerCase().contains(keyWord))
+          .toList();
     });
   }
 
@@ -162,9 +97,15 @@ class BerandaController extends State<BerandaView> {
       });
     });
 
-    // Inisialisasi stream dan ambil lokasi saat widget pertama kali dibuat
     restaurantStream = FirebaseFirestore.instance.collection('restaurants').snapshots();
     _fetchCurrentLocation();
+
+    // Mendengarkan stream dan mengisi data restoran
+    restaurantStream.listen((snapshot) {
+      _allRestaurantsFromFirestore =
+          snapshot.docs.map((doc) => RestaurantModel.fromFirestore(doc)).toList();
+      onSearchChanged(); // Perbarui hasil pencarian setiap kali data baru masuk
+    });
   }
 
   @override

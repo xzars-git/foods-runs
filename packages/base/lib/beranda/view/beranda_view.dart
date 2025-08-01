@@ -15,7 +15,6 @@ class BerandaView extends StatefulWidget {
   @override
   State<BerandaView> createState() => BerandaController();
 
-  // Metode build ini akan dipanggil dari BerandaController
   Widget build(BuildContext context, BerandaController controller) {
     controller.view = this;
 

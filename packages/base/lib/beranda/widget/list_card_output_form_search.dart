@@ -36,18 +36,15 @@ class _ListCardOutputFormSearchState extends State<ListCardOutputFormSearch> {
                 bottom: MediaQuery.of(context).padding.bottom + 16.0,
               ),
               itemBuilder: (context, i) {
-                final name = controller.filteredRestaurants[i];
-                final data = controller.restaurantImages[name];
-
-                final img = data?['image'];
-                final desc = data?['description'] ?? 'Deskripsi tidak tersedia';
+                // Menggunakan data dari list filteredRestaurants yang berisi RestaurantModel
+                final restaurant = controller.filteredRestaurants[i];
 
                 return GestureDetector(
                   onTap: () {
-                    controller.searchController.text = name;
+                    controller.searchController.text = restaurant.nama;
                     controller.focusNode.unfocus();
+                    // Anda bisa meneruskan data restoran ke halaman detail
                     Get.to(const DetailRestoranView());
-                    // navigasi atau load data sesuai kebutuhan
                   },
                   child: Card(
                     margin: const EdgeInsets.only(bottom: 12),
@@ -57,19 +54,26 @@ class _ListCardOutputFormSearchState extends State<ListCardOutputFormSearch> {
                     elevation: 8,
                     child: Row(
                       children: [
-                        if (img != null)
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12),
-                            ),
-                            child: Image.network(
-                              img,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomLeft: Radius.circular(12),
                           ),
+                          child: Image.network(
+                            restaurant.imageUrl,
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 100,
+                                height: 100,
+                                color: Colors.grey,
+                                child: const Icon(Icons.broken_image, color: Colors.white),
+                              );
+                            },
+                          ),
+                        ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
@@ -77,12 +81,13 @@ class _ListCardOutputFormSearchState extends State<ListCardOutputFormSearch> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                name,
+                                restaurant.nama,
                                 style: Theme.of(context).textTheme.titleMedium,
+                                overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                desc,
+                                restaurant.deskripsi,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.bodySmall,
