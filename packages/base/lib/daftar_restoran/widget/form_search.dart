@@ -3,15 +3,15 @@ import 'package:base/daftar_restoran/controller/daftar_restoran_controller.dart'
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-class FormSearchDaftarMenuWidget extends StatefulWidget {
+class FormSearchDaftarRestoWidget extends StatefulWidget {
   final DaftarRestoranController controller;
-  const FormSearchDaftarMenuWidget({super.key, required this.controller});
+  const FormSearchDaftarRestoWidget({super.key, required this.controller});
 
   @override
-  State<FormSearchDaftarMenuWidget> createState() => _FormSearchDaftarMenuWidgetState();
+  State<FormSearchDaftarRestoWidget> createState() => _FormSearchDaftarRestoWidgetState();
 }
 
-class _FormSearchDaftarMenuWidgetState extends State<FormSearchDaftarMenuWidget> {
+class _FormSearchDaftarRestoWidgetState extends State<FormSearchDaftarRestoWidget> {
   @override
   Widget build(BuildContext context) {
     DaftarRestoranController controller = widget.controller;

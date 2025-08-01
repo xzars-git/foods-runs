@@ -1,15 +1,21 @@
+// base/daftar_restoran/view/daftar_restoran_view.dart
+
 import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import '../controller/daftar_restoran_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart'; // Grid dihilangkan
 import 'dart:math' as math;
 
+import '../controller/daftar_restoran_controller.dart';
 import '../widget/form_search.dart';
+import '../widget/list_card_output_form_search.dart';
 
 class DaftarRestoranView extends StatefulWidget {
-  const DaftarRestoranView({
-    super.key,
-  });
+  const DaftarRestoranView({super.key});
+
+  @override
+  State<DaftarRestoranView> createState() => DaftarRestoranController();
 
   Widget build(context, DaftarRestoranController controller) {
     controller.view = this;
@@ -18,184 +24,251 @@ class DaftarRestoranView extends StatefulWidget {
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        backgroundColor: neutralWhite,
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: gray500,
-                blurRadius: 16,
+      backgroundColor: neutralWhite,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: gray500,
+              blurRadius: 16,
+            ),
+          ],
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(36),
+            topRight: Radius.circular(36),
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(36),
+            topRight: Radius.circular(36),
+          ),
+          child: BottomNavigationBar(
+            currentIndex: controller.navigationIndex,
+            selectedItemColor: Get.theme.colorScheme.primary,
+            unselectedItemColor: gray500,
+            onTap: (index) {
+              controller.navigationIndex = index;
+              if (controller.navigationIndex == 0) {
+                newRouter.replace(RouterUtils.beranda);
+              }
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Beranda',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.restaurant),
+                label: 'Daftar Restoran',
               ),
             ],
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(36),
-              topRight: Radius.circular(36),
+          ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Positioned(
+            top: -height * 0.2,
+            left: width * 0.4,
+            child: Transform.rotate(
+              angle: 20 * math.pi / 180,
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                MediaRes.images.svg.backgroundSplashScreen,
+                width: width * 0.9,
+                height: height * 0.4,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(36),
-              topRight: Radius.circular(36),
-            ),
-            child: BottomNavigationBar(
-              currentIndex: controller.navigationIndex,
-              selectedItemColor: Get.theme.colorScheme.primary,
-              unselectedItemColor: gray500,
-              onTap: (index) {
-                controller.navigationIndex = index;
-                if (controller.navigationIndex == 0) {
-                  newRouter.replace(RouterUtils.beranda);
-                }
-              },
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Beranda',
+          Container(
+            width: width,
+            height: height * 0.35,
+            color: neutralWhite.withOpacity(0.9),
+          ),
+          SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Daftar Restoran",
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      FormSearchDaftarRestoWidget(
+                        controller: controller,
+                      ),
+                    ],
+                  ),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.restaurant),
-                  label: 'Daftar Restoran',
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: controller.restaurantStream,
+                    builder: (context, snapshot) {
+                      if (controller.isLoadingLocation) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const CircularProgressIndicator(),
+                              const SizedBox(height: 16),
+                              Text(controller.locationStatusMessage),
+                            ],
+                          ),
+                        );
+                      }
+                      if (controller.currentPosition == null) {
+                        return Center(
+                          child: Text(controller.locationStatusMessage),
+                        );
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Center(child: Text("Error: ${snapshot.error}"));
+                      }
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return const Center(child: Text("Tidak ada restoran ditemukan."));
+                      }
+
+                      // Panggil fungsi di controller untuk memproses snapshot
+                      final List<RestaurantWithDistance> restaurantsWithDistance =
+                          controller.getRestaurantsWithDistance(snapshot.data!);
+
+                      // Perbarui daftar semua restoran di controller untuk pencarian
+                      if (snapshot.data!.docs.isNotEmpty) {
+                        controller.allRestaurantsFromFirestore = snapshot.data!.docs
+                            .map((doc) => RestaurantModel.fromFirestore(doc))
+                            .toList();
+                        // Panggil onSearchChanged untuk memperbarui filteredRestaurants
+                        controller.onSearchChanged();
+                      }
+
+                      // Tentukan daftar yang akan ditampilkan
+                      final displayedList = controller.filteredRestaurants.isNotEmpty
+                          ? controller.filteredRestaurants
+                              .map((r) => restaurantsWithDistance
+                                  .firstWhere((rw) => rw.restaurant.id == r.id))
+                              .toList()
+                          : restaurantsWithDistance;
+
+                      if (displayedList.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'Tidak ada restoran yang ditemukan.',
+                            style: TextStyle(fontSize: 16, color: gray700),
+                          ),
+                        );
+                      }
+
+                      // Ganti StaggeredGrid dengan ListView.builder
+                      return ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        itemCount: displayedList.length,
+                        itemBuilder: (context, index) {
+                          final restaurantWithDistance = displayedList[index];
+                          final restaurant = restaurantWithDistance.restaurant;
+                          return InkWell(
+                            onTap: () {
+                              Get.to(
+                                DetailRestoranView(
+                                    dataRestoran: restaurant,
+                                    userPosition: controller.currentPosition!),
+                              );
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 4,
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(16),
+                                      bottomLeft: Radius.circular(16),
+                                    ),
+                                    child: Image.network(
+                                      restaurant.imageUrl,
+                                      width: 100, // Ukuran gambar yang lebih besar
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          width: 100,
+                                          height: 100,
+                                          color: gray700,
+                                          child:
+                                              const Icon(Icons.broken_image, color: Colors.white),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            restaurant.nama,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.star,
+                                                  color: Color(0xFFF9A825), size: 16),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                restaurant.rating.toStringAsFixed(1),
+                                                style: Get.theme.textTheme.bodyMedium,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            "${Helper.formatDistance(restaurantWithDistance.distanceInKm)} km dari Anda",
+                                            style: Get.theme.textTheme.bodyMedium
+                                                ?.copyWith(color: gray600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
           ),
-        ),
-        body: Stack(
-          children: [
-            Positioned(
-              top: -height * 0.2,
-              left: width * 0.4,
-              child: Transform.rotate(
-                angle: 20 * math.pi / 180,
-                alignment: Alignment.center,
-                child: SvgPicture.asset(
-                  MediaRes.images.svg.backgroundSplashScreen,
-                  width: width * 0.9,
-                  height: height * 0.4,
-                  fit: BoxFit.cover,
-                ),
-              ),
+          if (controller.focusNode.hasFocus && controller.filteredRestaurants.isNotEmpty)
+            ListCardOutputFormSearchDaftarRestaurant(
+              controller: controller,
             ),
-            Container(
-              width: width,
-              height: height * 0.35,
-              color: neutralWhite.withOpacity(0.9),
-            ),
-            SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Daftar Restoran",
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        FormSearchDaftarMenuWidget(
-                          controller: controller,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: controller.filteredMenu.isEmpty
-                        ? const Center(
-                            child: Text(
-                              'Tidak ada menu yang ditemukan.',
-                              style: TextStyle(fontSize: 16, color: gray700),
-                            ),
-                          )
-                        : ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            // Menampilkan maksimal 4 item
-                            itemCount: math.min(controller.filteredMenu.length, 4),
-                            itemBuilder: (context, index) {
-                              final item = controller.filteredMenu[index];
-
-                              return InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 16),
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: neutralWhite,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: gray500,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 4),
-                                      )
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(
-                                          // Menggunakan null-check dan fallback
-                                          item['image_url'] ??
-                                              'https://placehold.co/60x60/e0e0e0/ffffff?text=No+Image',
-                                          width: 60,
-                                          height: 60,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              item['nama'] ?? 'Nama Tidak Tersedia',
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              item['deskripsi'] ?? 'Deskripsi Tidak Tersedia',
-                                              maxLines: 4,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: Get.theme.textTheme.bodyMedium
-                                                  ?.copyWith(color: gray600, height: 1.25),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 12.0,
-                                      ),
-                                      // Menambahkan format "Rp." dengan pemisah ribuan
-                                      Text(
-                                        Helper.formatRupiah(item['harga']),
-                                        style: Get.theme.textTheme.bodyLarge?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Get.theme.colorScheme.primary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ));
+        ],
+      ),
+    );
   }
-
-  @override
-  State<DaftarRestoranView> createState() => DaftarRestoranController();
 }
