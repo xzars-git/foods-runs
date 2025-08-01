@@ -102,9 +102,9 @@ class BerandaView extends StatefulWidget {
                 const SizedBox(height: 16),
                 const ImageSliderWidget(
                   imageUrls: [
-                    'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-                    'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-                    'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
+                    'https://d2vuyvo9qdtgo9.cloudfront.net/promos/February2023/rgAJyB7tXu6iYZzb7IuR.jpg',
+                    'https://www.myvalue.id/_ipx/w_720&f_webp&q_85/https://production-myvalue.ap-south-1.linodeobjects.com/media/promo/1752464734503-202506_YFK_VC_Reviewed',
+                    'https://www.myvalue.id/_ipx/w_720&f_webp&q_85/https://production-myvalue.ap-south-1.linodeobjects.com/media/promo/1752464938157-202501_Good-Will-Dimsum-x-Dari-Alam-Voucher-15K',
                   ],
                 ),
                 const SizedBox(
