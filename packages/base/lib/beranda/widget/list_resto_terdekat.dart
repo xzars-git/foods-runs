@@ -2,7 +2,16 @@ import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../controller/beranda_controller.dart'; // Pastikan path ini benar
+import 'package:geolocator/geolocator.dart';
+import '../controller/beranda_controller.dart';
+
+// Sebuah class sederhana untuk menampung data restoran dan jarak yang dihitung
+class _RestaurantWithDistance {
+  final RestaurantModel restaurant;
+  final double distanceInKm;
+
+  _RestaurantWithDistance({required this.restaurant, required this.distanceInKm});
+}
 
 class ListRestoTerdekatWidget extends StatelessWidget {
   final BerandaController controller;
@@ -10,6 +19,29 @@ class ListRestoTerdekatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Tampilkan indikator loading saat lokasi sedang dicari
+    if (controller.isLoadingLocation) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            Text(controller.locationStatusMessage),
+          ],
+        ),
+      );
+    }
+
+    // Jika lokasi gagal didapat, tampilkan pesan error
+    if (controller.currentPosition == null) {
+      return Center(
+        child: Text(controller.locationStatusMessage),
+      );
+    }
+
+    final currentPosition = controller.currentPosition!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -36,23 +68,44 @@ class ListRestoTerdekatWidget extends StatelessWidget {
                   return const Center(child: Text("Tidak ada restoran ditemukan."));
                 }
 
-                // Ubah snapshot data menjadi list of Restaurant
+                // Ubah snapshot data menjadi list of RestaurantModel
                 final List<RestaurantModel> restaurants =
                     snapshot.data!.docs.map((doc) => RestaurantModel.fromFirestore(doc)).toList();
 
+                // Hitung jarak dan buat list baru
+                final List<_RestaurantWithDistance> restaurantsWithDistance = [];
+                for (var restaurant in restaurants) {
+                  final distanceInMeters = Geolocator.distanceBetween(
+                    currentPosition.latitude,
+                    currentPosition.longitude,
+                    restaurant.latitude,
+                    restaurant.longitude,
+                  );
+                  restaurantsWithDistance.add(
+                    _RestaurantWithDistance(
+                      restaurant: restaurant,
+                      distanceInKm: distanceInMeters / 1000,
+                    ),
+                  );
+                }
+
+                // Urutkan daftar restoran berdasarkan jarak dari yang terdekat
+                restaurantsWithDistance.sort((a, b) => a.distanceInKm.compareTo(b.distanceInKm));
+
                 return GridView.builder(
-                  itemCount: restaurants.length,
+                  itemCount: restaurantsWithDistance.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 0.8, // Menyesuaikan rasio aspek agar lebih rapi
+                    childAspectRatio: 0.8,
                   ),
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom + 16.0,
                   ),
                   itemBuilder: (context, index) {
-                    final restaurant = restaurants[index];
+                    final restaurantWithDistance = restaurantsWithDistance[index];
+                    final restaurant = restaurantWithDistance.restaurant;
                     return Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -76,12 +129,11 @@ class ListRestoTerdekatWidget extends StatelessWidget {
                               width: double.infinity,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
-                                // Fallback gambar jika URL tidak valid
                                 return Container(
                                   height: 80,
                                   width: double.infinity,
-                                  color: Colors.grey,
-                                  child: const Icon(Icons.broken_image, color: Colors.white),
+                                  color: gray700,
+                                  child: const Icon(Icons.broken_image, color: neutralWhite),
                                 );
                               },
                             ),
@@ -109,6 +161,12 @@ class ListRestoTerdekatWidget extends StatelessWidget {
                                       style: Get.theme.textTheme.bodyMedium,
                                     ),
                                   ],
+                                ),
+                                const SizedBox(height: 6),
+                                // Tampilkan jarak ke restoran
+                                Text(
+                                  "${Helper.formatDistance(restaurantWithDistance.distanceInKm)} km dari Anda",
+                                  style: Get.theme.textTheme.bodyMedium?.copyWith(color: gray600),
                                 ),
                                 const SizedBox(height: 6),
                                 Text(

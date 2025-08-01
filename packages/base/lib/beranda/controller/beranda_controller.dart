@@ -1,6 +1,7 @@
 import 'package:base/base.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart'; // Impor geolocator
 
 class BerandaController extends State<BerandaView> {
   static late BerandaController instance;
@@ -9,6 +10,15 @@ class BerandaController extends State<BerandaView> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode focusNode = FocusNode();
   bool isSearching = false;
+
+  // Variabel untuk menangani lokasi pengguna
+  Position? currentPosition;
+  bool isLoadingLocation = true;
+  String locationStatusMessage = 'Mencari lokasi...';
+
+  // Stream untuk mendengarkan perubahan data dari Firestore secara real-time
+  late Stream<QuerySnapshot> restaurantStream;
+
   final List<String> allRestaurants = [
     'McDonald’s',
     'Burger King',
@@ -19,11 +29,10 @@ class BerandaController extends State<BerandaView> {
     'Burger King 2',
     'KFC 2',
     'Sushi Tei 2',
+    'Sushi Tei 2',
     'Pizza Hut 2',
   ];
-
-  // Stream untuk mendengarkan perubahan data dari Firestore secara real-time
-  late Stream<QuerySnapshot> restaurantStream;
+  List<String> filteredRestaurants = [];
 
   final List<Widget> navigationPages = const [
     BerandaView(),
@@ -83,7 +92,6 @@ class BerandaController extends State<BerandaView> {
       'description': 'Pizza pan klasik dan pasta creamy.',
     },
   };
-  List<String> filteredRestaurants = [];
 
   void onSearchChanged() {
     final keyWord = searchController.text.toLowerCase();
@@ -92,8 +100,60 @@ class BerandaController extends State<BerandaView> {
     });
   }
 
+  // Fungsi untuk mendapatkan lokasi pengguna
+  Future<void> _fetchCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    try {
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        setState(() {
+          locationStatusMessage = "Layanan lokasi dinonaktifkan.";
+          isLoadingLocation = false;
+        });
+        return;
+      }
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() {
+            locationStatusMessage = "Izin lokasi ditolak.";
+            isLoadingLocation = false;
+          });
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        setState(() {
+          locationStatusMessage = "Izin lokasi ditolak permanen.";
+          isLoadingLocation = false;
+        });
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      setState(() {
+        currentPosition = position;
+        isLoadingLocation = false;
+        locationStatusMessage = 'Lokasi berhasil ditemukan.';
+      });
+    } catch (e) {
+      setState(() {
+        locationStatusMessage = "Gagal mendapatkan lokasi: ${e.toString()}";
+        isLoadingLocation = false;
+      });
+    }
+  }
+
   @override
   void initState() {
+    super.initState();
     instance = this;
     searchController.addListener(onSearchChanged);
     focusNode.addListener(() {
@@ -102,13 +162,15 @@ class BerandaController extends State<BerandaView> {
       });
     });
 
-    // Inisialisasi stream untuk mengambil data restoran dari Firestore
+    // Inisialisasi stream dan ambil lokasi saat widget pertama kali dibuat
     restaurantStream = FirebaseFirestore.instance.collection('restaurants').snapshots();
-    super.initState();
+    _fetchCurrentLocation();
   }
 
   @override
   void dispose() {
+    searchController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 

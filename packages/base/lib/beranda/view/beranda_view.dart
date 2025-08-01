@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import '../controller/beranda_controller.dart';
 import 'dart:math' as math;
 
+import '../controller/beranda_controller.dart';
 import '../widget/form_search.dart';
 import '../widget/image_slider.dart';
 import '../widget/list_card_output_form_search.dart';
@@ -12,7 +12,11 @@ import '../widget/location_header.dart';
 class BerandaView extends StatefulWidget {
   const BerandaView({super.key});
 
-  Widget build(context, BerandaController controller) {
+  @override
+  State<BerandaView> createState() => BerandaController();
+
+  // Metode build ini akan dipanggil dari BerandaController
+  Widget build(BuildContext context, BerandaController controller) {
     controller.view = this;
 
     final width = MediaQuery.of(context).size.width;
@@ -28,14 +32,12 @@ class BerandaView extends StatefulWidget {
             ),
           ],
           borderRadius: BorderRadius.only(
-            // <--- Add this for rounded corners
-            topLeft: Radius.circular(36), // Adjust the radius as needed
-            topRight: Radius.circular(36), // Adjust the radius as needed
+            topLeft: Radius.circular(36),
+            topRight: Radius.circular(36),
           ),
         ),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
-            // Match the border radius here
             topLeft: Radius.circular(36),
             topRight: Radius.circular(36),
           ),
@@ -66,8 +68,8 @@ class BerandaView extends StatefulWidget {
             top: -height * 0.28,
             left: width * 0.4,
             child: Transform.rotate(
-              angle: 20 * math.pi / 180, // misal 30 derajat
-              alignment: Alignment.center, // pivot rotasi: tengah SVG
+              angle: 20 * math.pi / 180,
+              alignment: Alignment.center,
               child: SvgPicture.asset(
                 MediaRes.images.svg.backgroundSplashScreen,
                 width: width * 0.9,
@@ -90,9 +92,7 @@ class BerandaView extends StatefulWidget {
                   child: Column(
                     children: [
                       const LocationHeader(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                       FormSearchWidget(
                         controller: controller,
                       ),
@@ -107,9 +107,7 @@ class BerandaView extends StatefulWidget {
                     'https://www.myvalue.id/_ipx/w_720&f_webp&q_85/https://production-myvalue.ap-south-1.linodeobjects.com/media/promo/1752464938157-202501_Good-Will-Dimsum-x-Dari-Alam-Voucher-15K',
                   ],
                 ),
-                const SizedBox(
-                  height: 12.0,
-                ),
+                const SizedBox(height: 12.0),
                 Expanded(
                   child: ListRestoTerdekatWidget(
                     controller: controller,
@@ -124,7 +122,4 @@ class BerandaView extends StatefulWidget {
       ),
     );
   }
-
-  @override
-  State<BerandaView> createState() => BerandaController();
 }
