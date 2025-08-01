@@ -10,7 +10,6 @@ export 'package:flutter_svg/flutter_svg.dart';
 export 'package:go_router/go_router.dart';
 export 'package:hive/hive.dart';
 export 'package:hive_flutter/hive_flutter.dart';
-export 'package:lottie/lottie.dart';
 export 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 export 'package:validatorless/validatorless.dart';
 export 'package:vph_web_date_picker/vph_web_date_picker.dart';

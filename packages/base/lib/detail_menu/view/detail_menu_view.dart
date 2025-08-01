@@ -1,3 +1,4 @@
+import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import '../controller/detail_menu_controller.dart';
@@ -7,7 +8,8 @@ class DetailMenuView extends StatefulWidget {
   final double latitude;
   // Menerima data menu yang dipilih
   final Map<String, dynamic> dataDetailMenu;
-  const DetailMenuView({super.key, required this.dataDetailMenu, required this.latitude, required this.longitude});
+  const DetailMenuView(
+      {super.key, required this.dataDetailMenu, required this.latitude, required this.longitude});
 
   Widget build(context, DetailMenuController controller) {
     controller.view = this;
@@ -20,16 +22,6 @@ class DetailMenuView extends StatefulWidget {
     const double imageHeight = 300.0;
     // Define how much the content card overlaps the image
     const double contentOverlap = 40.0;
-
-    // Helper function untuk format harga dengan pemisah ribuan
-    String formatRupiah(dynamic number) {
-      if (number == null) {
-        return 'Harga N/A';
-      }
-      final numberString = number.toString();
-      final regex = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-      return 'Rp. ${numberString.replaceAllMapped(regex, (Match m) => '${m[1]}.')}';
-    }
 
     return Scaffold(
       backgroundColor: neutralWhite,
@@ -81,7 +73,7 @@ class DetailMenuView extends StatefulWidget {
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: neutralWhite,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
@@ -180,7 +172,11 @@ class DetailMenuView extends StatefulWidget {
                 bottom: 10.0 + bottomPadding,
               ),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(
+                    SetRouteView(latitude: latitude, longitude: longitude),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   foregroundColor: neutralWhite,
