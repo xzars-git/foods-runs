@@ -3,11 +3,13 @@ import 'package:base/beranda/controller/beranda_controller.dart';
 import 'package:base/daftar_menu/view/daftar_menu_view.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import '../controller/detail_restoran_controller.dart';
 
 class DetailRestoranView extends StatefulWidget {
   final RestaurantModel dataRestoran;
-  const DetailRestoranView({super.key, required this.dataRestoran});
+  final Position userPosition;
+  const DetailRestoranView({super.key, required this.dataRestoran, required this.userPosition});
 
   Widget build(context, DetailRestoranController controller) {
     controller.view = this;
@@ -174,9 +176,8 @@ class DetailRestoranView extends StatefulWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         Get.to(DaftarMenuView(
-                          dataDaftarMenu: dataRestoran.menu,
-                          latitude: dataRestoran.latitude,
-                          longitude: dataRestoran.longitude,
+                          dataRestoran: dataRestoran,
+                          userPosition: userPosition,
                         ));
                       },
                       style: ElevatedButton.styleFrom(
@@ -197,7 +198,14 @@ class DetailRestoranView extends StatefulWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(
+                          SetRouteView(
+                            dataRestoran: dataRestoran,
+                            userLocation: userPosition,
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                         foregroundColor: neutralWhite,

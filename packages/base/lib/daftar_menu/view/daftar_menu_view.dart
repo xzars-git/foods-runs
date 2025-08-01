@@ -1,17 +1,16 @@
 import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import '../controller/daftar_menu_controller.dart';
 import 'dart:math' as math;
 
 import '../widget/form_search.dart';
 
 class DaftarMenuView extends StatefulWidget {
-  final double latitude;
-  final double longitude;
-  final Map<String, dynamic> dataDaftarMenu;
-  const DaftarMenuView(
-      {super.key, required this.dataDaftarMenu, required this.latitude, required this.longitude});
+  final RestaurantModel dataRestoran;
+  final Position userPosition;
+  const DaftarMenuView({super.key, required this.dataRestoran, required this.userPosition});
 
   Widget build(context, DaftarMenuController controller) {
     controller.view = this;
@@ -22,42 +21,34 @@ class DaftarMenuView extends StatefulWidget {
     return Scaffold(
         backgroundColor: neutralWhite,
         bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: gray500,
-                blurRadius: 16,
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.to(
+                      SetRouteView(
+                        dataRestoran: dataRestoran,
+                        userLocation: userPosition,
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: neutralWhite,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: const Text(
+                    "Menuju Lokasi Restoran Sekarang",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
               ),
             ],
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(36),
-              topRight: Radius.circular(36),
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(36),
-              topRight: Radius.circular(36),
-            ),
-            child: BottomNavigationBar(
-              currentIndex: controller.navigationIndex,
-              selectedItemColor: Get.theme.colorScheme.primary,
-              unselectedItemColor: gray500,
-              onTap: (index) {
-                controller.navigationIndex = index;
-                controller.update();
-              },
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Beranda',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.location_on),
-                  label: 'Lokasi',
-                ),
-              ],
-            ),
           ),
         ),
         body: Stack(
@@ -144,8 +135,8 @@ class DaftarMenuView extends StatefulWidget {
                               return InkWell(
                                 onTap: () {
                                   Get.to(DetailMenuView(
-                                    latitude: latitude,
-                                    longitude: longitude,
+                                    dataRestoran: dataRestoran,
+                                    userPosition: userPosition,
                                     dataDetailMenu: item,
                                   ));
                                 },

@@ -1,160 +1,518 @@
+import 'dart:ui';
+
+import 'package:base/base.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+
 import '../controller/set_route_controller.dart';
 
 class SetRouteView extends StatefulWidget {
-  final double latitude;
-  final double longitude;
-  const SetRouteView({
-    super.key,
-    required this.latitude,
-    required this.longitude,
-  });
+  final RestaurantModel dataRestoran;
+  final Position userLocation;
 
-  Widget build(context, SetRouteController controller) {
-    controller.view = this;
-    final double topPadding = MediaQuery.of(context).padding.top;
-    final double bottomPadding = MediaQuery.of(context).padding.bottom;
-    final LatLng destination = LatLng(controller.view.latitude, controller.view.longitude);
+  const SetRouteView({super.key, required this.dataRestoran, required this.userLocation});
 
+  Widget build(BuildContext context, SetRouteController controller) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Bagian Peta
-          FlutterMap(
-            mapController: MapController(),
-            options: MapOptions(
-              initialCenter: destination,
-              initialZoom: 15.0,
-            ),
-            children: [
-              TileLayer(
-                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                userAgentPackageName: 'com.example.app',
-              ),
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    width: 80.0,
-                    height: 80.0,
-                    point: destination,
-                    child: Icon(
-                      Icons.location_on,
-                      color: primaryColor,
-                      size: 40.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        title: Text(
+          'Petunjuk Arah',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
-
-          // Tombol Kembali
-          Positioned(
-            top: topPadding + 10,
-            left: 16,
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                  color: neutralWhite.withOpacity(0.8),
-                ),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  color: primaryColor,
-                  size: 24,
-                ),
-              ),
-            ),
-          ),
-
-          // Bottom Card
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: neutralWhite,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: gray500,
-                    blurRadius: 10,
-                    offset: Offset(0, -4),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: 24.0,
-                  left: 24.0,
-                  right: 24.0,
-                  bottom: 24.0 + bottomPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+        ),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        actions: [
+          PopupMenuButton<String>(
+            iconColor: Theme.of(context).colorScheme.onSurface,
+            onSelected: controller.changeTransportMode,
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'driving-car',
+                child: Row(
                   children: [
-                    Text(
-                      "Restaurant Location",
-                      style: Get.theme.textTheme.titleMedium,
+                    Icon(
+                      Icons.directions_car,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
-                    const SizedBox(height: 16),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: red500,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            controller.addressText,
-                            style: Get.theme.textTheme.bodyLarge,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: controller.openMap,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        foregroundColor: neutralWhite,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        minimumSize: const Size.fromHeight(50),
-                      ),
-                      child: const Text(
-                        "Set Route",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+                    const SizedBox(width: 8),
+                    const Text('Mobil'),
                   ],
                 ),
               ),
+              PopupMenuItem(
+                value: 'driving-hgv',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.motorcycle,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('Motor'),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'foot-walking',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.directions_walk,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('Jalan Kaki'),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'cycling-regular',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.directions_bike,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('Sepeda'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          // Map area - mengisi seluruh layar
+          controller.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _buildMap(context, controller),
+
+          // Route summary card - mengambang di atas
+          Positioned(
+            top: 16,
+            left: 16,
+            right: 16,
+            child: SafeArea(
+              child: _buildRouteSummaryCard(context, controller),
             ),
+          ),
+
+          // Bottom bar - mengambang di bawah
+          Positioned(
+            bottom: 16,
+            left: 16,
+            right: 16,
+            child: _buildBottomBar(context, controller),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildRouteSummaryCard(BuildContext context, SetRouteController controller) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Destination info
+              Row(
+                children: [
+                  Icon(
+                    Icons.restaurant,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      dataRestoran.nama,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                dataRestoran.alamat,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Route summary
+              if (controller.routeSummary != null) ...[
+                Row(
+                  children: [
+                    _buildSummaryItem(
+                      context,
+                      icon: Icons.straighten,
+                      label: 'Jarak',
+                      value: controller.routeSummary!.distanceText,
+                    ),
+                    const SizedBox(width: 16),
+                    _buildSummaryItem(
+                      context,
+                      icon: Icons.schedule,
+                      label: 'Waktu',
+                      value: controller.routeSummary!.durationText,
+                    ),
+                    const SizedBox(width: 16),
+                    _buildSummaryItem(
+                      context,
+                      icon: _getTransportIcon(controller.currentTransportMode),
+                      label: 'Mode',
+                      value: _getTransportLabel(controller.currentTransportMode),
+                    ),
+                  ],
+                ),
+              ] else if (controller.hasError) ...[
+                Row(
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      color: Theme.of(context).colorScheme.error,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Gagal memuat rute',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSummaryItem(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Expanded(
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            color: Theme.of(context).colorScheme.primary,
+            size: 18,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMap(BuildContext context, SetRouteController controller) {
+    return ClipRRect(
+      borderRadius: BorderRadius.zero,
+      child: FlutterMap(
+        mapController: controller.mapController,
+        options: MapOptions(
+          initialCenter: LatLng(
+            userLocation.latitude,
+            userLocation.longitude,
+          ),
+          initialZoom: 13.0,
+          maxZoom: 18.0,
+          minZoom: 5.0,
+          onMapReady: controller.onMapReady,
+        ),
+        children: [
+          // Map tiles
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.xzars.foods_run',
+            maxZoom: 19,
+          ),
+
+          // Route polyline
+          if (controller.routeCoordinates.isNotEmpty)
+            PolylineLayer(
+              polylines: [
+                Polyline(
+                  points: controller.routeCoordinates,
+                  strokeWidth: 4.0,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ],
+            ),
+
+          // Markers
+          MarkerLayer(
+            markers: [
+              // Start marker (user location)
+              Marker(
+                point: LatLng(userLocation.latitude, userLocation.longitude),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.surface,
+                      width: 3,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.my_location,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 20,
+                  ),
+                ),
+              ),
+
+              // Destination marker (restaurant)
+              Marker(
+                point: LatLng(
+                  dataRestoran.latitude,
+                  dataRestoran.longitude,
+                ),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.error,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.surface,
+                      width: 3,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.restaurant,
+                    color: Theme.of(context).colorScheme.onError,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomBar(BuildContext context, SetRouteController controller) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, -4),
+              ),
+            ],
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            ),
+          ),
+          child: SafeArea(
+            child: BasePrimaryButton(
+              onPressed: controller.routeCoordinates.isNotEmpty
+                  ? () => controller.openInGoogleMaps()
+                  : null,
+              prefixIcon: const Icon(Icons.navigation),
+              text: 'Mulai Navigasi',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showInstructions(BuildContext context, SetRouteController controller) {
+    if (controller.routeInstructions.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Instruksi rute belum tersedia'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.7,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Column(
+          children: [
+            // Handle bar
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.outline,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+
+            // Header
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Text(
+                    'Instruksi Navigasi',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+
+            // Instructions list
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: controller.routeInstructions.length,
+                itemBuilder: (context, index) {
+                  final instruction = controller.routeInstructions[index];
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        child: Text(
+                          '${index + 1}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        instruction.instruction,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        '${instruction.formattedDistance} • ${instruction.name}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _getTransportIcon(String mode) {
+    switch (mode) {
+      case 'driving-car':
+        return Icons.directions_car;
+      case 'driving-hgv':
+        return Icons.motorcycle;
+      case 'foot-walking':
+        return Icons.directions_walk;
+      case 'cycling-regular':
+        return Icons.directions_bike;
+      default:
+        return Icons.directions;
+    }
+  }
+
+  String _getTransportLabel(String mode) {
+    switch (mode) {
+      case 'driving-car':
+        return 'Mobil';
+      case 'driving-hgv':
+        return 'Motor';
+      case 'foot-walking':
+        return 'Jalan';
+      case 'cycling-regular':
+        return 'Sepeda';
+      default:
+        return 'Lainnya';
+    }
   }
 
   @override

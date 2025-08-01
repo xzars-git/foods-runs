@@ -26,6 +26,9 @@ export 'package:ota_update/ota_update.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
+export 'utils/string_utils.dart';
+export 'button/base_button_primary.dart';
+
 //Database
 export 'database/session_splash_screen_database.dart';
 

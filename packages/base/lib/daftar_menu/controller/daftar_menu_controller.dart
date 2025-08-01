@@ -44,7 +44,7 @@ class DaftarMenuController extends State<DaftarMenuView> {
     instance = this;
     searchController.text = "";
 
-    final menuData = widget.dataDaftarMenu;
+    final menuData = widget.dataRestoran.menu;
     _allMenu = menuData.values.map((item) {
       if (item is Map<String, dynamic>) {
         return item;

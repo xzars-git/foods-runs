@@ -40,12 +40,13 @@ class _ListCardOutputFormSearchState extends State<ListCardOutputFormSearch> {
                 final restaurant = controller.filteredRestaurants[i];
 
                 return GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     controller.searchController.text = restaurant.nama;
                     controller.focusNode.unfocus();
                     // Anda bisa meneruskan data restoran ke halaman detail
                     Get.to(DetailRestoranView(
                       dataRestoran: restaurant,
+                      userPosition: controller.currentPosition!,
                     ));
                   },
                   child: Card(

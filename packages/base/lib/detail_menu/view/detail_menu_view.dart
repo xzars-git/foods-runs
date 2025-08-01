@@ -1,15 +1,19 @@
 import 'package:base/base.dart';
+import 'package:base/set_route/view/set_route_view.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import '../controller/detail_menu_controller.dart';
 
 class DetailMenuView extends StatefulWidget {
-  final double longitude;
-  final double latitude;
-  // Menerima data menu yang dipilih
+  final RestaurantModel dataRestoran;
+  final Position userPosition;
   final Map<String, dynamic> dataDetailMenu;
   const DetailMenuView(
-      {super.key, required this.dataDetailMenu, required this.latitude, required this.longitude});
+      {super.key,
+      required this.dataDetailMenu,
+      required this.dataRestoran,
+      required this.userPosition});
 
   Widget build(context, DetailMenuController controller) {
     controller.view = this;
@@ -174,7 +178,10 @@ class DetailMenuView extends StatefulWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Get.to(
-                    SetRouteView(latitude: latitude, longitude: longitude),
+                    SetRouteView(
+                      dataRestoran: dataRestoran,
+                      userLocation: userPosition,
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(

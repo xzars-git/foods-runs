@@ -80,8 +80,8 @@ class ListRestoTerdekatWidget extends StatelessWidget {
                         onTap: () {
                           Get.to(
                             DetailRestoranView(
-                              dataRestoran: restaurant,
-                            ),
+                                dataRestoran: restaurant,
+                                userPosition: controller.currentPosition!),
                           );
                         },
                         child: Container(

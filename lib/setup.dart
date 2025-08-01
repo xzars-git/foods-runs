@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:base/base.dart';
 import 'package:core/database/theme_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ import 'core.dart';
 class Setup {
   static Future initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    // Initialize environment variables
+    await Ddotenv.load(fileName: ".env");
 
     await Firebase.initializeApp();
 

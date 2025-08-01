@@ -38,4 +38,6 @@ class Helper {
     final regex = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     return 'Rp. ${numberString.replaceAllMapped(regex, (Match m) => '${m[1]}.')}';
   }
+
+  
 }
