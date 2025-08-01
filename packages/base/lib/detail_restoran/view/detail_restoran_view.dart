@@ -173,7 +173,9 @@ class DetailRestoranView extends StatefulWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.to(const DaftarMenuView());
+                        Get.to(DaftarMenuView(
+                          dataDaftarMenu: dataRestoran.menu,
+                        ));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: neutralWhite,
@@ -193,8 +195,7 @@ class DetailRestoranView extends StatefulWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                         foregroundColor: neutralWhite,

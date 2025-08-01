@@ -27,4 +27,15 @@ class Helper {
       return formattedInteger;
     }
   }
+
+  // Helper function untuk format harga
+  static String formatRupiah(dynamic number) {
+    if (number == null) {
+      return 'Harga N/A';
+    }
+    // Konversi ke string lalu gunakan regex untuk menambahkan titik
+    final numberString = number.toString();
+    final regex = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    return 'Rp. ${numberString.replaceAllMapped(regex, (Match m) => '${m[1]}.')}';
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:base/base.dart';
 import 'package:flutter/material.dart';
 import '../view/daftar_menu_view.dart';
+import 'package:get/get.dart';
 
 class DaftarMenuController extends State<DaftarMenuView> {
   static late DaftarMenuController instance;
@@ -9,131 +10,79 @@ class DaftarMenuController extends State<DaftarMenuView> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode focusNode = FocusNode();
   bool isSearching = false;
-  final List<String> allRestaurants = [
-    'McDonald’s',
-    'Burger King',
-    'KFC',
-    'Sushi Tei',
-    'Pizza Hut',
-    'McDonald’s 2',
-    'Burger King 2',
-    'KFC 2',
-    'Sushi Tei 2',
-    'Pizza Hut 2',
-  ];
+
+  // Variabel untuk menampung semua item menu dari data masukan
+  List<Map<String, dynamic>> _allMenu = [];
+  // Variabel untuk menampung menu yang sudah difilter
+  List<Map<String, dynamic>> filteredMenu = [];
 
   final List<Widget> navigationPages = const [
-    DaftarMenuView(),
+    BerandaView(),
     SplashScreenView(),
   ];
   int navigationIndex = 0;
 
-  final Map<String, Map<String, String>> restaurantImages = {
-    'McDonald’s': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Restoran cepat saji populer dunia.',
-    },
-    'Burger King': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Nikmati burger bakar khas.',
-    },
-    'KFC': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Ayam goreng krispi dengan resep rahasia.',
-    },
-    'Sushi Tei': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pilihan sushi segar dan lezat.',
-    },
-    'Pizza Hut': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pizza pan klasik dan pasta creamy.',
-    },
-    'McDonald’s 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Restoran cepat saji populer dunia.',
-    },
-    'Burger King 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Nikmati burger bakar khas.',
-    },
-    'KFC 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Ayam goreng krispi dengan resep rahasia.',
-    },
-    'Sushi Tei 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pilihan sushi segar dan lezat.',
-    },
-    'Pizza Hut 2': {
-      'image':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-      'description': 'Pizza pan klasik dan pasta creamy.',
-    },
-  };
-  List<String> filteredRestaurants = [];
-
+  // Fungsi untuk menyaring menu saat teks pencarian berubah
   void onSearchChanged() {
     final keyWord = searchController.text.toLowerCase();
     setState(() {
-      filteredRestaurants = allRestaurants.where((r) => r.toLowerCase().contains(keyWord)).toList();
+      print("Debug Search: Kata kunci pencarian: '$keyWord'");
+      if (keyWord.isEmpty) {
+        // Jika input kosong, tampilkan semua menu
+        filteredMenu = _allMenu;
+        print(
+            "Debug Search: Kata kunci kosong, menampilkan semua menu. Jumlah menu: ${filteredMenu.length}");
+      } else {
+        // Jika ada input, filter menu berdasarkan nama
+        filteredMenu = _allMenu.where((menuItem) {
+          final nama = menuItem['nama']?.toLowerCase();
+          return nama?.contains(keyWord) ?? false;
+        }).toList();
+        print(
+            "Debug Search: Kata kunci ada, menampilkan menu yang difilter. Jumlah menu: ${filteredMenu.length}");
+      }
     });
   }
 
-  final List<Map<String, String>> makanan = [
-    {
-      'nama': 'Chicken Spagetti',
-      'deskripsi': '1 Big Pack',
-      'harga': '\$7',
-      'gambar':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-    },
-    {
-      'nama': 'Jollof Rice',
-      'deskripsi': '1 Combo pack',
-      'harga': '\$10',
-      'gambar':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-    },
-    {
-      'nama': 'Fruity Pancakes',
-      'deskripsi': 'Noodle Home',
-      'harga': '\$12',
-      'gambar':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-    },
-    {
-      'nama': 'Pepper Pizza',
-      'deskripsi': '5kg box of Pizza',
-      'harga': '\$15',
-      'gambar':
-          'https://craftsnippets.com/uploads/post_images/_1320x500_crop_center-center_none/875/art-hanging-photographs-photos-265946.webp',
-    },
-  ];
-
   @override
   void initState() {
+    super.initState();
     instance = this;
+    searchController.text = "";
+
+    print("Debug Init: Data daftar menu yang diterima: ${widget.dataDaftarMenu}");
+    // Proses data menu yang datang dari widget
+    // Menggunakan dataDaftarMenu secara langsung karena tidak ada kunci 'menu' di dalamnya
+    final menuData = widget.dataDaftarMenu;
+    print("Debug Init: Data menu ditemukan. Memproses...");
+    _allMenu = menuData.values.map((item) {
+      // Pastikan setiap item adalah Map<String, dynamic>
+      if (item is Map<String, dynamic>) {
+        return item;
+      }
+      // Jika bukan, kembalikan map kosong atau tangani sesuai kebutuhan
+      return <String, dynamic>{};
+    }).toList();
+
+    // Inisialisasi daftar menu yang difilter dengan semua menu
+    filteredMenu = _allMenu;
+
+    print("Debug Init: Ukuran _allMenu setelah diproses: ${_allMenu.length}");
+    print("Debug Init: Ukuran filteredMenu setelah inisialisasi: ${filteredMenu.length}");
+
     searchController.addListener(onSearchChanged);
     focusNode.addListener(() {
       setState(() {
         isSearching = focusNode.hasFocus;
+        print("Debug Focus: Status pencarian diperbarui: $isSearching");
       });
     });
-    super.initState();
   }
 
   @override
   void dispose() {
+    searchController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
